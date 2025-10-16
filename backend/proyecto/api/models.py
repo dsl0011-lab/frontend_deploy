@@ -8,25 +8,24 @@ class UsuarioPersonalizado(models.Model):
         ('O', 'Otro'),
     ]
 
-    ROLES = [
-        ('E', 'Estudiante'),
-        ('P', 'Profesor'),
-        ('A', 'Administrador'),
-    ]
+    #roles
+    class rol(models.TextChoices):
+        ADMIN = "A", "Administrador"
+        TEACHER = "P", "Profesor"
+        STUDENT = "E", "Estudiante"
 
-    nombre = models.CharField(max_length=50)
-    apellido = models.CharField(max_length=50)
-    email = models.EmailField(unique=True)
-    clave = models.CharField(max_length=128)
-    genero = models.CharField(max_length=1, choices=GENEROS)
-    rol = models.CharField(max_length=1, choices=ROLES)
-    fecha_creacion = models.DateTimeField(auto_now_add=True)
+    rol = models.CharField(
+        max_length=20,
+        choices=rol.choices,
+        default=rol.STUDENT
+    )
 
-    def save(self, *args, **kwargs):
-        # Encripta la contraseña antes de guardar
-        if not self.pk:  # Solo al crear (no al actualizar)
-            self.clave = make_password(self.clave)
-        super().save(*args, **kwargs)
+    #genero
+    class gender(models.TextChoices):
+        MALE = "M", "Masculino"
+        FEMALE = "F", "Femenino"
 
     def __str__(self):
-        return f"{self.nombre} {self.apellido} ({self.username})"
+        return f"{self.name} {self.last_name} ({self.role})"
+
+>>>>>>> Stashed changes

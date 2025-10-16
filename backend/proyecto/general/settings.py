@@ -49,14 +49,6 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:5173',
-    'http://127.0.0.1:5173',
-]
-
-ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
-
-
 ROOT_URLCONF = 'general.urls'
 
 TEMPLATES = [
@@ -83,12 +75,25 @@ ASGI_APPLICATION = 'general.asgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.getenv("POSTGRES_DB", default="proyecto_db"),  #ATENCION CONFIGURA ESTOS DATOS CON RESPECTO A TU POSTGRES
-        "USER": os.getenv("POSTGRES_USER", default="postgres"), #revisa la variable de entorno (.env) para posibles configuraciones
-        "PASSWORD": os.getenv("POSTGRES_PASSWORD", default=""), 
-        "HOST": os.getenv("POSTGRES_HOST", default="localhost"),
-        "PORT": os.getenv("POSTGRES_PORT", default="5432"),
+        "NAME": os.environ.get("POSTGRES_DB", "proyecto_db"),
+        "USER": os.environ.get("POSTGRES_USER", "danos"),
+        "PASSWORD": os.environ.get("POSTGRES_PASSWORD", "1601"),
+        "HOST": os.environ.get("POSTGRES_HOST", "localhost"),
+        "PORT": os.environ.get("POSTGRES_PORT", "5432"),
     }
+}
+
+# --- Usuario personalizado ---
+AUTH_USER_MODEL = "api.UsuarioPersonalizado"
+
+# --- DRF / JWT ---
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ),
+    "DEFAULT_PERMISSION_CLASSES": (
+        "rest_framework.permissions.AllowAny",
+    ),
 }
 
 
@@ -128,7 +133,16 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+]
+
+ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

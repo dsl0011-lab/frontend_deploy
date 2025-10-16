@@ -12,7 +12,6 @@ const Login = ({ setFlipped }) => {
 
     //proxima funcionalidad si se implementa JWT
     // const [ passwordSaved, setPasswordSaved ] = useState(false);
-    
     // const savePassword = () => {
     //     setPasswordSaved(prev => !prev)
     // }
@@ -25,28 +24,30 @@ const Login = ({ setFlipped }) => {
         })
     }, [])
 
-
     useEffect(() => {
-        const sendForm = async () => {
-            try {
-                //endpoint de prueba, (cambialo cuando tengas el oficial)
-                const datosEnviados = await fetch(URL, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(form)
-                });
-                if (!datosEnviados.ok) {
-                    const respuestaFallida = await datosEnviados.json()
-                    console.error(respuestaFallida)
+        if (form.email !== "" && form.password !== "") {
+
+            const sendForm = async () => {
+                try {
+                    //endpoint de prueba, (cambialo cuando tengas el oficial)
+                    const datosEnviados = await fetch(URL, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(form)
+                    });
+                    if (!datosEnviados.ok) {
+                        const respuestaFallida = await datosEnviados.json()
+                        console.error(respuestaFallida)
+                    }
+                    const respuestaCorrecta = await datosEnviados.json()
+                    //datos recibidos
+                    console.log(respuestaCorrecta)
+                } catch (e) {
+                    console.error("Ha ocurrido un error", e)
                 }
-                const respuestaCorrecta = await datosEnviados.json()
-                //datos recibidos
-                console.log(respuestaCorrecta)
-            } catch (e) {
-                console.error("Ha ocurrido un error", e)
             }
+            sendForm();
         }
-        sendForm();
     }, [form])
 
 

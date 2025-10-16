@@ -2,25 +2,25 @@ import { useEffect, useState } from "react"
 
 const Register = ({ funcUsuario, setFlipped }) => {
 
-    const URL = "http://localhost:8000/api/usuarios/"
+    const URL = "http://localhost:8000/api/register/"
 
     const [ formData, setFormData ] = useState({
-        nombre: "",
-        apellido: "",
+        first_name: "",
+        last_name: "",
         email: "",
-        clave: "",
-        genero: "",
+        password: "",
+        gender: "",
         rol: ""
     })
 
     const saveForm = (e) => {
         e.preventDefault();
         setFormData({
-            nombre: e.currentTarget.nombreR.value.trim(),
-            apellido: e.currentTarget.apellidoR.value.trim(),
+            first_name: e.currentTarget.nombreR.value.trim(),
+            last_name: e.currentTarget.apellidoR.value.trim(),
             email: e.currentTarget.emailR.value.trim(),
-            genero: e.currentTarget.generoR.value.trim(),
-            clave: e.currentTarget.passwordR.value.trim(),
+            password: e.currentTarget.passwordR.value.trim(),
+            gender: e.currentTarget.generoR.value.trim(),
             rol: e.currentTarget.rolR.value.trim()
         })
     }
@@ -64,7 +64,6 @@ const Register = ({ funcUsuario, setFlipped }) => {
                             <option value="">Selecciona tu género</option>
                             <option value="M">masculino</option>
                             <option value="F">femenino</option>
-                            <option value="O">otro</option>
                         </select>
                         <select name="RolR" id="rolR" className="text-white bg-gray-50 border border-gray-300 rounded-2xl w-full max-w-60 h-auto p-0.5 sm:p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-white" required >
                             <option value="">Selecciona tu rol</option>
