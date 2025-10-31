@@ -14,9 +14,8 @@ const Sidebar = () => {
         <Link to='/' className="hover:text-gray-400">Inicio</Link>
         <Link to='/perfil' className="hover:text-gray-400">Perfil</Link>
         <Link to='/asignaturas' className="hover:text-gray-400">Asignaturas</Link>
-
         {/* 👇 Solo visible si el usuario es profesor o admin */}
-        {(usuario?.role === "TEACHER" || usuario?.role === "ADMIN") && (
+        {(usuario?.role === "T" || usuario?.role === "A") && (
           <Link to='/profesor' className="hover:text-gray-400">Panel Profesor</Link>
         )}
       </nav>

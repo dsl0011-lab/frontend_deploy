@@ -12,11 +12,7 @@
   "dependencies": {
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
-<<<<<<< HEAD
     "react-router-dom": "^7.9.4"
-=======
-    "react-router-dom": "^7.9.5"
->>>>>>> 1500580 (creada app cursos y funcionalidades de profesor)
   },
   "devDependencies": {
     "@eslint/js": "^9.36.0",

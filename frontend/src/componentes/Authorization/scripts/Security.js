@@ -6,7 +6,7 @@ const Logout = () => {
         credentials: "include",
     })
     .then(response => response.json())
-    .then(data => console.log(data))
+    // .then(data => console.log(data))
     .catch(e => console.error("ha ocurrido un error al cerrar sesión", e))
 }
 

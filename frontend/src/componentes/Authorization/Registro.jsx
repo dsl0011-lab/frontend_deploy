@@ -40,7 +40,7 @@ const Register = ({ funcUsuario, setFlipped }) => {
                     }}
                     const data = await respuesta.json()
                     console.log(data)
-                    // funcUsuario(data)
+                    funcUsuario(data)
                 }catch(e){
                     console.log(`Ha ocurrido un error no documentado: ${e}`)
                 }

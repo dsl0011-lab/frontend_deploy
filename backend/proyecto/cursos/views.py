@@ -9,15 +9,17 @@ from .serializers import (
     EntregaSerializer, CalificacionSerializer
 )
 from .permisos import IsTeacherOrAdmin, IsOwnerTeacherOrAdmin
+from authentication import CookieJWTAuthentication #middleware personalizado para leer token desde cookie httponly
 
 class CursoViewSet(viewsets.ModelViewSet):
+    authentication_classes = [CookieJWTAuthentication]
     serializer_class = CursoSerializer
     permission_classes = [IsTeacherOrAdmin]
 
     def get_queryset(self):
         qs = Curso.objects.all().annotate(alumnos_count=Count('matriculas'))
         user = self.request.user
-        if user.role == 'ADMIN':
+        if user.role == 'A':
             return qs
         return qs.filter(profesor=user)  # Profesor ve solo sus cursos
 
@@ -39,13 +41,14 @@ class CursoViewSet(viewsets.ModelViewSet):
         return Response(MatriculaSerializer(m).data, status=201 if created else 200)
 
 class TareaViewSet(viewsets.ModelViewSet):
+    authentication_classes = [CookieJWTAuthentication]  
     serializer_class = TareaSerializer
     permission_classes = [IsTeacherOrAdmin]
 
     def get_queryset(self):
         user = self.request.user
         qs = Tarea.objects.select_related('curso')
-        if user.role == 'ADMIN':
+        if user.role == 'A':
             return qs
         return qs.filter(curso__profesor=user)
 
@@ -59,24 +62,26 @@ class EntregaViewSet(viewsets.ReadOnlyModelViewSet):
     El profesor puede listar/leer entregas de sus cursos.
     (Crear entrega lo hará el estudiante en otro endpoint/app)
     """
+    authentication_classes = [CookieJWTAuthentication]
     serializer_class = EntregaSerializer
     permission_classes = [IsTeacherOrAdmin]
 
     def get_queryset(self):
         user = self.request.user
         qs = Entrega.objects.select_related('tarea','alumno','tarea__curso')
-        if user.role == 'ADMIN':
+        if user.role == 'A':
             return qs
         return qs.filter(tarea__curso__profesor=user)
 
 class CalificacionViewSet(viewsets.ModelViewSet):
+    authentication_classes = [CookieJWTAuthentication]
     serializer_class = CalificacionSerializer
     permission_classes = [IsTeacherOrAdmin]
 
     def get_queryset(self):
         user = self.request.user
         qs = Calificacion.objects.select_related('entrega','entrega__tarea','entrega__tarea__curso')
-        if user.role == 'ADMIN':
+        if user.role == 'A':
             return qs
         return qs.filter(entrega__tarea__curso__profesor=user)
 

@@ -24,11 +24,6 @@ except Exception as e:
 #print("ENV DEBUG -> DB_NAME:", os.getenv("DB_NAME"))
 
 
-load_dotenv()
-
-BASE_DIR = Path(__file__).resolve().parent.parent
-load_dotenv(BASE_DIR / ".env")
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -113,12 +108,11 @@ AUTH_USER_MODEL = "api.UsuarioPersonalizado"
 # --- DRF / JWT ---
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
-        "api.authentication.CookieJWTAuthentication", 
+        "authentication.CookieJWTAuthentication",        
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
     "DEFAULT_PERMISSION_CLASSES": (
         "rest_framework.permissions.IsAuthenticated",
-        # "rest_framework.permissions.AllowAny",
     ),
 }
 

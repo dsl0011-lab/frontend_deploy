@@ -20,7 +20,7 @@ from .serializers import (
     UsuarioPersonalizadoSerializer,
     RegistroSerializer,
 )
-from .authentication import CookieJWTAuthentication #middleware personalizado para leer token desde cookie httponly
+from authentication import CookieJWTAuthentication #middleware personalizado para leer token desde cookie httponly
 
 
 class IsAdminOrSelf(BasePermission):

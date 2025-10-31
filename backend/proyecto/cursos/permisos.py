@@ -4,14 +4,14 @@ class IsTeacherOrAdmin(BasePermission):
     def has_permission(self, request, view):
         if not request.user or not request.user.is_authenticated:
             return False
-        return request.user.role in ('TEACHER', 'ADMIN')
+        return request.user.role in ('T', 'A') # Teacher or Admin
 
 class IsOwnerTeacherOrAdmin(BasePermission):
     """
     Para objetos ligados a un curso: solo el profesor dueño del curso o admin.
     """
     def has_object_permission(self, request, view, obj):
-        if request.user.role == 'ADMIN':
+        if request.user.role == 'A':
             return True
         # obj puede ser Curso, Tarea, etc. Resolvemos el curso asociado
         curso = getattr(obj, 'curso', None)
