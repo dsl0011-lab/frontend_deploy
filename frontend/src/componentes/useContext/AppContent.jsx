@@ -2,7 +2,6 @@ import { Routes, Route } from 'react-router-dom';
 // src/componentes/useContext/AppContent.jsx
 import { useContext } from 'react';
 import { UsuarioContext } from './UsuarioContext';
-import Auth from '../Authorization/Auth';
 import Dashboard from '../Dashboard/Dashboard';
 import PrivateRoute from '../Authorization/PrivateRoute';
 import ProfileCard from '../Dashboard/ProfileCard';
