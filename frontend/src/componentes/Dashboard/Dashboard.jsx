@@ -1,6 +1,6 @@
 import { useContext, useState } from "react"
 import { UsuarioContext } from "../useContext/UsuarioContext"
-import { Outlet } from "react-router-dom"
+import { Outlet, useLocation } from "react-router-dom"
 import nvImg from '../../assets/sideBarIcon.svg'
 import exit from '../../assets/exit.svg'
 import Sidebar from "./Sidebar"
@@ -10,11 +10,12 @@ import { Logout } from "../Authorization/scripts/Security"
 const Dashboard = () => {
     const { setUsuario } = useContext(UsuarioContext)
     const [showNB, setShowNB] = useState(false)
+    const location = useLocation();
 
     return (
-        <main className="flex h-full w-full min-h-screen bg-gray-50 dark:bg-gray-900">
+        <main className="flex h-full w-full bg-gray-50 dark:bg-gray-900">
             <div
-                className={`fixed top-0 left-0 h-screen w-64 bg-white shadow-lg 
+                className={`fixed top-0 left-0 h-12/12 w-64 bg-white shadow-lg 
                 transition-transform duration-1000 ease-in-out
                 ${showNB ? "translate-x-0" : "-translate-x-full"}
                 md:translate-x-0 md:static md:w-64 z-50`}
@@ -34,7 +35,7 @@ const Dashboard = () => {
                     </button>
                 </article>
                 <article className="flex-1 p-6">
-                    <Inicio />
+                    {location.pathname == '/' && <Inicio /> }
                     <Outlet />
                 </article>
             </section>

@@ -47,40 +47,4 @@ function AppContent() {
   )
 }
 export default AppContent
-{/* const { usuario, setUsuario } = useContext(UsuarioContext);
-  const funcUsuario = useCallback((informacion) => setUsuario(() => informacion), [setUsuario]);
-
-  const notLogged =
-    !usuario ||
-    usuario.full_name === '' ||
-    usuario.full_name === undefined ||
-    usuario.full_name === null;  */}
-
-{/* return (
-    <main className='h-screen w-auto flex justify-center flex-col items-center bg-gradient-to-t from-gray-400 to-black box-border'>
-      <Router>
-        {notLogged ? (
-          // === Rutas para NO autenticado ===
-          <Routes>
-            <Route path="/login" element={<Auth funcUsuario={funcUsuario} />} />
-            <Route path="*" element={<Navigate to="/login" replace />} />
-          </Routes>
-        ) : (
-          // === Rutas para autenticado ===
-          <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/login" element={<Navigate to="/" replace />} />
-
-            {/* PROFESOR (protegido por rol) */}
-
-
-// <Route path="*" element={<Navigate to="/" replace />} />
-//           </Routes >
-//         )}
-//       </Router >
-//     </main >
-//   );
-// }
-
-// export default AppContent; */}
 

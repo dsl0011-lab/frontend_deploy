@@ -31,7 +31,7 @@ class CursoViewSet(viewsets.ModelViewSet):
             return [IsTeacherOrAdmin(), IsOwnerTeacherOrAdmin()]
         return super().get_permissions()
 
-    @action(methods=['post'], detail=True, permission_classes=[IsTeacherOrAdmin, IsOwnerTeacherOrAdmin])
+    @action(methods=['post'], detail=True, permission_classes=[ IsTeacherOrAdmin, IsOwnerTeacherOrAdmin])
     def matricular(self, request, pk=None):
         curso = self.get_object()
         alumno_id = request.data.get('alumno')
