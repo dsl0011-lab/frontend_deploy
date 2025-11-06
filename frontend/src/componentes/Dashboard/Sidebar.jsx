@@ -13,11 +13,14 @@ const Sidebar = () => {
       <nav className="w-auto h-full flex flex-col gap-4 bg-gray-700 p-4">
         <Link to='/' className="hover:text-gray-400">Inicio</Link>
         <Link to='/perfil' className="hover:text-gray-400">Perfil</Link>
-        <Link to='/asignaturas' className="hover:text-gray-400">Asignaturas</Link>
-        {/* 👇 Solo visible si el usuario es profesor o admin */}
-        {(usuario?.role === "T" || usuario?.role === "A") && (
-          <Link to='/profesor' className="hover:text-gray-400">Panel Profesor</Link>
-        )}
+        {/* muestra el componente con al rutina dependiendo el role del usuario*/}
+      {
+        (usuario?.role === "T" ? <Link to='/profesor' className="hover:text-gray-400">Panel Profesor</Link> : (
+          usuario?.role === "S" ? <Link to='/estudiante' className="hover:text-gray-400">Panel Estudiante</Link> : (
+            // aqui se podra colocar la ruta para un componente admin dentro de la app
+            <p>Panel Admin</p>
+        )))
+      }
       </nav>
     </aside>
   );

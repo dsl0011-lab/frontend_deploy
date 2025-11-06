@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     "corsheaders",
     "api",
     "cursos",
+    "estudiante",
 ]
 
 MIDDLEWARE = [

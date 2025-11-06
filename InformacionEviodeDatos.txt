@@ -1,7 +1,0 @@
-Actualmente el form de registro envia los siguiente datos:
-        nombre, apellido, email, clave, genero, rol
-se modifico la palabra "contraseña" para evitar posibles problemas con 
-caracteres como la ñ 
-
-Cabe destacar que el backend actual procesa este cambio con clave y no con contraseña,
-tenganlo en cuenta!!

@@ -8,21 +8,25 @@ export default function CursoDetallePage() {
   const [tareas, setTareas] = useState([]);
   const [titulo, setTitulo] = useState("");
   const [alumnoId, setAlumnoId] = useState("");
+
   useEffect(() => {
     apiFetch(`/api/profesor/cursos/${id}/`, /*{ token }*/).then(setCurso);
     apiFetch(`/api/profesor/tareas/`, /*{ token }*/).then(ts => setTareas(ts.filter(t => String(t.curso) === String(id))));
   }, [id/*, token*/]);
+
   const crearTarea = async (e) => {
     e.preventDefault();
     const t = await apiFetch(`/api/profesor/tareas/`, { method:"POST", body:{ curso:Number(id), titulo }, /*token */});
     setTareas([t, ...tareas]); setTitulo("");
   };
+
   const matricular = async (e) => {
     e.preventDefault();
     if (!alumnoId) return;
     await apiFetch(`/api/profesor/cursos/${id}/matricular/`, { method:"POST", body:{ alumno:Number(alumnoId) },/* token*/ });
     setAlumnoId(""); alert("Alumno matriculado");
   };
+  
   if (!curso) return <div>Cargando…</div>;
   return (
     <div className="space-y-6">

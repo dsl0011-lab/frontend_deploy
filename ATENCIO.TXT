@@ -1,0 +1,8 @@
+a esta version se agrega el componente estudiante dentro del frontend y su logica correspondiente en el backend.
+Este componente devuelve informacion relacionada al estudiante: sus cursos, tareas y se tiene pensado seguir expandiendo la parte 
+estudiantil dentro de este componente 
+
+COSAS A TENER EN CUENTA => UNA VEZ EL TOKEN EXPIRA NO HAY LOGICA RECURRENTE QUE MANDE OTRO FETCH AL SERVIDOR PARA 
+RENOVAR EL TOKEN POR LO QUE NOS ENCONTRAREMOS CON UN 401 SI FUERA EL CASO, AQUI CREAR UNA PETICION A REFRESH_TOKEN
+Y SI ES POSIBLE REALIZARLO DENTRO DE LA PETICION PRINCIPAL, ES DECIR, REALIZAR UNA PETICION PRINCIPAL LA QUE EL USUARIO NECESITA
+Y UNA PETICION SECUNDARIA (SI FUERA NECESARIO) EL FETCH QUE RENUEVA EL TOKEN

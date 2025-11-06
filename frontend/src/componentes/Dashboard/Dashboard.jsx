@@ -1,11 +1,11 @@
 import { useContext, useState } from "react"
 import { UsuarioContext } from "../useContext/UsuarioContext"
 import { Outlet, useLocation } from "react-router-dom"
+import { Logout } from "../Authorization/scripts/Security"
 import nvImg from '../../assets/sideBarIcon.svg'
 import exit from '../../assets/exit.svg'
 import Sidebar from "./Sidebar"
 import Inicio from "./Inicio"
-import { Logout } from "../Authorization/scripts/Security"
 
 const Dashboard = () => {
     const { setUsuario } = useContext(UsuarioContext)
