@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from "react-router-dom";
 import { apiFetch } from '../Profesor/api';
-import { imagenesRandom } from './fotos';
-import { convertirFecha } from './conversionFecha';
+import { imagenesRandom } from './scripts/fotos'
+import { convertirFecha } from './scripts/conversionFecha'
 
 function CursoDetallePageEstudiante() {
     const { id } = useParams();

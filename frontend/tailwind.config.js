@@ -9,6 +9,8 @@ export default {
       screens: {
         xxs: "20rem",
         xs: "30rem",
+        // break points por altura
+        mdh: { raw: "(max-height: 650px)" },
       },
     },
   },

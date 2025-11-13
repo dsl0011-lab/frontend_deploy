@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { apiFetch } from "../Profesor/api";
-import { imagenesRandom } from "./fotos";
+import { imagenesRandom } from './scripts/fotos'
 
 const CursosPageStudent = () => {
   const [ cursos, setCursos ] = useState("")

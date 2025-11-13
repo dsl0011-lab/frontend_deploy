@@ -15,33 +15,33 @@ const Sidebar = () => {
   }
 
   return (
-    <aside className={`w-full h-full min-h-screen absolute md:static bg-gray-800 dark:bg-gray-800 text-white p-6 flex flex-col`}>
-      <h2 className="text-2xl font-bold mb-8">Aula Virtual</h2>
-      <nav className="w-auto h-full flex flex-col gap-4 bg-gray-700 p-4 text-xs md:text-lg">
+    <aside className={`w-full h-full min-h-screen text-2xl absolute md:static mdh:bg-green-400 bg-gray-800 dark:bg-gray-800 text-white p-6 mdh:p-[1px] flex flex-col`}>
+      <h2 className="font-bold m-8 mdh:mb-0 mdh:hidden">Aula Virtual</h2>
+      <nav className="w-auto h-full mdh:text-sm  mdh:overflow-y-auto flex flex-col gap-4 bg-gray-700 p-4">
         <button onClick={()=>ir('/')} className="flex-1 bg-slate-900 flex items-center justify-center flex-col p-1 gap-1 hover:bg-sky-950 rounded-2xl">
-          <img src={inicio} className="w-6/12 h-6/12" />
-          <p className="w-12/12 h-6/12">Inicio</p>
+          <img src={inicio} className="mdh:w-6/12 mdh:h-6/12 w-[45px] h-[45px]" />
+          <p className="w-12/12 h-6/12 mdh:w-fit mdh:h-fit">Inicio</p>
         </button>
         <button onClick={()=>ir('/perfil')} className="flex-1 bg-slate-900 flex items-center justify-center flex-col p-1 gap-1 hover:bg-sky-950 rounded-2xl">
-          <img src={perfil} className="w-6/12 h-6/12" />
-          <p className="w-12/12 h-6/12">Perfil</p>
+          <img src={perfil} className="mdh:w-6/12 mdh:h-6/12 w-[45px] h-[45px]" />
+          <p className="w-12/12 h-6/12 mdh:w-fit mdh:h-fit">Perfil</p>
         </button>
         <button onClick={()=>ir('/tutorias')}className="flex-1 bg-slate-900 flex items-center justify-center flex-col p-1 gap-1 hover:bg-sky-950 rounded-2xl">
-          <img src={tutoria} className="w-6/12 h-6/12" />
-          <p className="w-12/12 h-6/12">Tutorias</p>
+          <img src={tutoria} className="mdh:w-6/12 mdh:h-6/12 w-[45px] h-[45px]" />
+          <p className="w-12/12 h-6/12 mdh:w-fit mdh:h-fit">Tutorias</p>
         </button>
         {/* muestra el componente con al rutina dependiendo el role del usuario*/}
       {
         (usuario?.role === "T" ? 
         <button onClick={()=>ir('/profesor')}className="flex-1 bg-slate-900 flex items-center justify-center flex-col p-1 gap-1 hover:bg-sky-950 rounded-2xl">
-          <img src={cursos} className="w-6/12 h-6/12" />
-          <p className="w-12/12 h-6/12">Panel Profesor</p>
+          <img src={cursos} className="mdh:w-6/12 mdh:h-6/12 w-[45px] h-[45px]" />
+          <p className="w-12/12 h-6/12 mdh:w-fit mdh:h-fit">Panel Profesor</p>
         </button>
         : (
           usuario?.role === "S" ? (   
         <button onClick={()=>ir('/estudiante')}className="flex-1 bg-slate-900 flex items-center justify-center flex-col p-1 gap-1 hover:bg-sky-950 rounded-2xl">
-          <img src={cursos} className="w-6/12 h-6/12" />
-          <p className="w-12/12 h-6/12">Panel Estudiante</p>
+          <img src={cursos} className="mdh:w-6/12 mdh:h-6/12 w-[45px] h-[45px]" />
+          <p className="w-12/12 h-6/12 mdh:w-fit mdh:h-fit">Panel Estudiante</p>
         </button>
           ) : (
             // aqui se podra colocar la ruta para un componente admin dentro de la app

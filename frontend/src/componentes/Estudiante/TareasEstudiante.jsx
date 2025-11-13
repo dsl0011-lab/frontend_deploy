@@ -1,7 +1,7 @@
 import React from 'react'
 import { useEffect, useState } from "react";
 import { apiFetch } from '../Profesor/api';
-import { convertirFecha } from './conversionFecha';
+import { convertirFecha } from './scripts/conversionFecha'
 
 const TareasEstudiante = () => {
 const [tareas, setTareas] = useState([]);
