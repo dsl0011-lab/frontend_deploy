@@ -26,9 +26,7 @@ import CursoDetallePageEstudiante from '../Estudiante/CursoDetallePageEstudiante
 import TareasEstudiante from '../Estudiante/TareasEstudiante';
 
 function AppContent() {
-
   const { usuario } = useContext(UsuarioContext)
-
   return (
     <>
       <Routes>

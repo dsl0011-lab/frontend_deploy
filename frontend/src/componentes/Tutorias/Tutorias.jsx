@@ -12,7 +12,7 @@ export default function Tutorias() {
   const [showModal, setShowModal] = useState(false);
   const [cursosDisponibles, setCursosDisponibles] = useState([]);
 
-  const puedeCrear = usuario?.role === "T" || usuario?.role === "A";
+  const puedeCrear = usuario?.role === "T";
 
   useEffect(() => {
     let alive = true;

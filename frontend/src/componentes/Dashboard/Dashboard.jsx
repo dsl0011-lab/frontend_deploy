@@ -2,7 +2,7 @@ import { useContext, useState } from "react"
 import { UsuarioContext } from "../useContext/UsuarioContext"
 import { Outlet, useLocation } from "react-router-dom"
 import { Logout } from "../Authorization/scripts/Security"
-import nvImg from '../../assets/sideBarIcon.svg'
+import arrow from '../../assets/btn-arrow.svg'
 import exit from '../../assets/exit.svg'
 import Sidebar from "./Sidebar"
 import Inicio from "./Inicio"
@@ -13,15 +13,14 @@ const Dashboard = () => {
     const location = useLocation();
 
     return (
-        <main className="flex h-full w-full bg-gray-50 dark:bg-gray-900">
+        <main className="flex h-full min-h-screen min-w-screen w-full bg-gray-50 dark:bg-gray-900">
             <div
-                className={`fixed top-0 left-0 h-12/12 w-64 bg-white shadow-lg 
-                transition-transform duration-1000 ease-in-out
-                ${showNB ? "translate-x-0" : "-translate-x-full"}
-                md:translate-x-0 md:static md:w-64 z-50`}
+                className={`fixed top-0 left-0 h-full w-64 bg-white shadow-lg 
+                transition-transform duration-1000 ease-in-out z-50
+                ${showNB ? "translate-x-0" : "-translate-x-full"}`}
             >
                 <Sidebar showNB={showNB} setShowNB={setShowNB} />
-                <img src={nvImg} className="w-8 h-8 m-2 pr-1 rounded-r-lg bg-white hover:bg-gray-400 absolute md:static top-60 right-[-40px] md:hidden md:w-0 md:h-0" 
+                <img src={arrow} className="w-8 h-8 m-2 pr-1 rounded-r-lg bg-white hover:bg-gray-400 absolute top-60 right-[-40px]" 
                 onClick={()=>(setShowNB((prev) => !prev))}
                 />
             </div>

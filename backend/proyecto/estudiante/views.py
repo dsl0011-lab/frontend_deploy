@@ -16,7 +16,11 @@ class EstudianteCursoViewSet(viewsets.ReadOnlyModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
-        return Curso.objects.filter(matriculas__alumno=user)
+        curso_id = self.kwargs.get("pk")
+        queryset = Curso.objects.filter(matriculas__alumno=user)
+        if curso_id:
+            queryset = queryset.filter(id=curso_id)
+        return queryset.select_related('profesor')
 
 
 class EstudianteTareasViewSet(viewsets.ReadOnlyModelViewSet):

@@ -1,3 +1,5 @@
+import { secureFetch } from "../Authorization/scripts/Security";
+
 const RAW_API = (import.meta.env.VITE_API_URL || "http://localhost:8000").trim();
 const API_BASE = RAW_API.replace(/\/+$/, "").replace(/\/api$/, "");
 
@@ -6,7 +8,7 @@ const buildUrl = (path = "") => {
   return `${API_BASE}/api${cleanPath}`;
 };
 
-export async function apiFetch(path, opts = {}) {
+export async function apiFetch(path, opts = {}, retry = false) {
   const url = buildUrl(path);
 
   // Normaliza headers
@@ -23,7 +25,7 @@ export async function apiFetch(path, opts = {}) {
     if (!headers['Content-Type'] && !headers['content-type']) {
       headers['Content-Type'] = 'application/json';
     }
-    try { body = JSON.stringify(body); } catch {}
+    try { body = JSON.stringify(body); } catch(e){console.error("Ha ocurrido un error:", e)}
   }
 
   const res = await fetch(url, {
@@ -32,6 +34,13 @@ export async function apiFetch(path, opts = {}) {
     ...opts,
     body,
   });
+
+  if (res.status === 401 && !retry) {
+    const refreshed = await secureFetch();
+    if (refreshed) {
+      return apiFetch(path, opts, true); // reintento una sola vez
+    }
+  }
 
   // DELETE en DRF suele devolver 204 sin body
   if (res.status === 204) return { ok: true };
@@ -55,12 +64,18 @@ export async function apiFetch(path, opts = {}) {
 
 export async function getResumenAlumnos() {
   const url = buildUrl("/profesor/cursos/resumen-alumnos/");
-
   const res = await fetch(url, {
     method: 'GET',
     credentials: 'include',                // Cookies HttpOnly
     headers: { 'Accept': 'application/json' }
   });
+
+  if (res.status === 401) {
+    const refreshed = await secureFetch();
+    if (refreshed) {
+      return apiFetch("/profesor/cursos/resumen-alumnos/"); // reintento una sola vez
+    }
+  }
 
   if (!res.ok) {
     const text = await res.text().catch(() => '');
@@ -78,6 +93,13 @@ export async function deleteTarea(id) {
     headers: { Accept: "application/json" },
   });
 
+  if (res.status === 401) {
+    const refreshed = await secureFetch();
+    if (refreshed) {
+      return apiFetch(url); // reintento una sola vez
+    }
+  }
+
   if (res.status === 204) return true; // DRF por defecto
   if (!res.ok) {
     const text = await res.text().catch(() => "");
@@ -86,14 +108,41 @@ export async function deleteTarea(id) {
   return true;
 }
 
-export const getTutorias = () => apiFetch("/profesor/tutorias/");
+export async function getTutorias(){
+  const res = apiFetch("/profesor/tutorias/");
+  const url = `/profesor/tutorias/`
+  if (res.status === 401) {
+    const refreshed = await secureFetch();
+    if (refreshed) {
+      return apiFetch(url); // reintento una sola vez
+    }
+  }
+}
 
-export const createTutoria = (payload) =>
-  apiFetch("/profesor/tutorias/", {
+export async function createTutoria(payload){
+  const res = apiFetch("/profesor/tutorias/", {
     method: "POST",
     body: payload,
   });
 
-export const getAlumnosCurso = (cursoId) =>
-  apiFetch(`/profesor/cursos/${cursoId}/alumnos/`);
+  const url = "/profesor/tutorias/"
+  if (res.status === 401) {
+    const refreshed = await secureFetch();
+    if (refreshed) {
+      return apiFetch(url); // reintento una sola vez
+    }
+  }
+}
+
+export async function getAlumnosCurso(cursoId){
+  const res = apiFetch(`/profesor/cursos/${cursoId}/alumnos/`);
+
+  const url = `/profesor/cursos/${cursoId}/alumnos/`
+  if (res.status === 401) {
+    const refreshed = await secureFetch();
+    if (refreshed) {
+      return apiFetch(url); // reintento una sola vez
+    }
+  }
+}
 
