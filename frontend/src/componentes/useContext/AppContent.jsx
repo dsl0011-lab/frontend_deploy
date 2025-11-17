@@ -16,6 +16,7 @@ import CursosPage from '../Profesor/CursosPage';
 import CursoDetallePage from '../Profesor/CursoDetallePage';
 import TareasPage from '../Profesor/TareasPage';
 import CalificacionesPage from '../Profesor/CalificacionesPage';
+import MensajeriaPage from '../Mensajeria/MensajeriaPage';
 
 // --- Estudiante ---
 import LayoutEstudiante from '../Estudiante/LayoutEstudiante';
@@ -34,6 +35,7 @@ function AppContent() {
             <Route path='perfil' element={<ProfileCard />} />
             <Route path='asignaturas' element={<Asignaturas />} />
             <Route path='asignaturas/:id' element={<AsignaturaDetalle />} />
+            <Route path='mensajes' element={<MensajeriaPage />} />
             <Route path='tutorias' element={<Tutorias />} />
             <Route
               path="profesor"
