@@ -5,6 +5,7 @@ import { UsuarioContext } from './UsuarioContext';
 import Dashboard from '../Dashboard/Dashboard';
 import PrivateRoute from '../Authorization/PrivateRoute';
 import ProfileCard from '../Dashboard/ProfileCard';
+import Perfil from '../Dashboard/Perfil';
 import Asignaturas from '../Dashboard/Asignaturas';
 import AsignaturaDetalle from '../Dashboard/AsignaturaDetalle';
 import Tutorias from '../Tutorias/Tutorias';
@@ -32,7 +33,7 @@ function AppContent() {
       <Routes>
         <Route element={<PrivateRoute />}>
           <Route path='/' element={<Dashboard />}>
-            <Route path='perfil' element={<ProfileCard />} />
+            <Route path='perfil' element={<Perfil />} />
             <Route path='asignaturas' element={<Asignaturas />} />
             <Route path='asignaturas/:id' element={<AsignaturaDetalle />} />
             <Route path='mensajes' element={<MensajeriaPage />} />
