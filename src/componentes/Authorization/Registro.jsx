@@ -4,7 +4,7 @@ import HelpElement from "./HelpElement";
 
 const Register = ({ funcUsuario, setFlipped }) => {
     const { setLoading } = useContext(LoadingContext)
-    const URL = "http://localhost:8000/api/auth/register/"
+    const URL = "https://api-deploy-wyep.onrender.com/api/auth/register/"
     const [ error, setError ] = useState(false)
     const [ help, setHelp ] = useState(false)
 

@@ -1,5 +1,5 @@
 //cierra la sesion eliminando el token valido de la cookie HTTP actual del usuario loggeado 
-const API_BASE = "http://localhost:8000/api"
+const API_BASE = "https://api-deploy-wyep.onrender.com"
 
 
 
@@ -7,7 +7,7 @@ const Logout = () => {
     let cookie = document.cookie
     cookie = cookie.split(";").flat().find(item => item.startsWith(" recordarDatos"))
     if(!cookie){
-        fetch("http://localhost:8000/api/auth/logout", {
+        fetch(`${API_BASE}/auth/token/api/auth/logout`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             credentials: "include",

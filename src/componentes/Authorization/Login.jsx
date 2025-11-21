@@ -7,8 +7,8 @@ import { UsuarioContext } from "../useContext/UsuarioContext";
 
 const Login = ({ setFlipped, funcUsuario }) => {
     //cambiar URL del endpoint en cuestion
-    const URL = "http://localhost:8000/api/auth/token/"
-    const automatico_inicio_url = "http://localhost:8000/api/auth/inicioAutomatico" 
+    const URL = "https://api-deploy-wyep.onrender.com/api/auth/token/"
+    const automatico_inicio_url = "https://api-deploy-wyep.onrender.com/api/auth/inicioAutomatico" 
     const { setLoading } = useContext(LoadingContext)
     const [error, setError] = useState(false)
     const [help, setHelp] = useState(false)
