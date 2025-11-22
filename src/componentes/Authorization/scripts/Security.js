@@ -48,8 +48,8 @@ function cookieGuardarDatos(recordarCookie){
     if(cookie === undefined && recordarCookie){
         document.cookie = `recordarDatos=true;max-age=${60*60*24*365};path=/`
     }else if(cookie !== undefined && !recordarCookie){
-        document.cookie = "recordarDatos=;max-age=0;path=/"
         document.cookie = "recordarDatos=;max-age=0;path=/;domain=frontend-deploy-eosin.vercel.app";
+        // document.cookie = "recordarDatos=;max-age=0;path=/";
     }
 }
 
