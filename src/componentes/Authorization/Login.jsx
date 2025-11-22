@@ -6,7 +6,7 @@ import { UsuarioContext } from "../useContext/UsuarioContext";
 
 const Login = ({ setFlipped, funcUsuario }) => {
     //cambiar URL del endpoint en cuestion
-    const URL = "http://localhost:8000/api/auth/token/"
+    const URL = "https://api-deploy-wyep.onrender.com/api/auth/token/"
     const { setLoading } = useContext(LoadingContext)
     const [error, setError] = useState(false)
     const [help, setHelp] = useState(false)
