@@ -104,7 +104,7 @@ const Login = ({ setFlipped, funcUsuario }) => {
                 <form onSubmit={(e) => saveForm(e)} className="w-full h-full flex flex-col items-center justify-start pt-4 gap-6 text-sm sm:text-base">
                     <input type="text" name="usernameR" id="usernameR" placeholder="Ingresa nick/username" className="text-white bg-gray-50 border border-gray-300 rounded-2xl w-full max-w-60 sm:max-w-96 h-auto p-1.5 sm:p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" required />
                     <input type="password" name="passwordL" id="passwordL" placeholder="Ingresa tu contraseña" autoComplete="off" className="text-white bg-gray-50 border border-gray-300 rounded-2xl w-full max-w-60 sm:max-w-96 h-auto p-1.5 sm:p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                        onFocus={() => setHelp(true)} onBlur={() => setHelp(false)} pattern={`^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+\\-={}[\\]:;"'<>,.?/~\`]).{8,}$`} title="Debe tener al menos una mayúscula, una minúscula, un número, un carácter especial y mínimo 8 caracteres" required />
+                        onFocus={() => setHelp(true)} onBlur={() => setHelp(false)} pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[^\w\s]).+$" minLength={8} maxLength={30} required />
                     {/* Inicio de sesión con JWT */}
                     {/* colocar un onclick con savePassword */}
                     <label className="relative inline-flex items-center gap-4 cursor-pointer">

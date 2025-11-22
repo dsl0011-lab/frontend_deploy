@@ -69,7 +69,7 @@ const Register = ({ funcUsuario, setFlipped }) => {
                             {/* ATENCIOOOOOON
                             luego incrementar seguridad de credencial contraseña con expresiones regulares u otra medida */}
                             <input type="password" name="passwordR" id="passwordR" placeholder="Ingresa tu contraseña" autoComplete="off" className="text-white bg-gray-50 border border-gray-300 rounded-2xl w-full max-w-60 h-auto p-0.5 sm:p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" 
-                            onFocus={()=>setHelp(true)} onBlur={()=>setHelp(false)} pattern={`^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+\\-={}[\\]:;"'<>,.?/~\`]).{8,}$`} title="Debe tener al menos una mayúscula, una minúscula, un número, un carácter especial y mínimo 8 caracteres" required />
+                            onFocus={()=>setHelp(true)} onBlur={()=>setHelp(false)} pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[^\w\s]).+$" minLength={8} maxLength={30} required />
                             <select name="generoR" id="generoR" className="text-white bg-gray-50 border border-gray-300 rounded-2xl w-full max-w-60 h-auto p-0.5 sm:p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-white" required >
                                 <option value="">Selecciona tu género</option>
                                 <option value="M">masculino</option>
