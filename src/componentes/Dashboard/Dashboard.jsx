@@ -7,7 +7,6 @@ import exit from '../../assets/exit.svg'
 import Sidebar from "./Sidebar"
 import Inicio from "./Inicio"
 import ComponenteLoading from "../PantallaLoading/ComponenteLoading"
-import { cookieGuardarDatos } from "../Authorization/scripts/Security";
 
 
 const Dashboard = () => {
@@ -34,7 +33,7 @@ const Dashboard = () => {
                     <h3 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white">
                         Tablero
                     </h3>
-                    <button onClick={() => (cookieGuardarDatos(false), Logout(), setUsuario(() => null))} className='bg-white w-12 h-12 hover:bg-gray-400 text-lg rounded-2xl p-2 ml-2 absolute top-0 right-0'>
+                    <button onClick={() => (Logout(), setUsuario(() => null))} className='bg-white w-12 h-12 hover:bg-gray-400 text-lg rounded-2xl p-2 ml-2 absolute top-0 right-0'>
                         <img src={exit} className="w-fit h-fit" />
                     </button>
                 </article>

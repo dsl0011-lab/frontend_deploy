@@ -4,6 +4,7 @@ const API_BASE = "https://api-deploy-wyep.onrender.com"
 
 
 const Logout = () => {
+    localStorage.removeItem("usuarioGuardado")
     let cookie = document.cookie
     cookie = cookie.split(";").flat().find(item => item.startsWith(" recordarDatos"))
     if(!cookie){
@@ -36,20 +37,4 @@ async function secureFetch() {
 
 
 
-function encontrarCookieDatosGuardados(){
-    let cookie = document.cookie;
-    return cookie = cookie.split(";").flat().find(item => item.startsWith(" recordarDatos"));
-}
-
-
-
-function cookieGuardarDatos(recordarCookie){
-    let cookie = encontrarCookieDatosGuardados()
-    if(cookie === undefined && recordarCookie){
-        document.cookie = `recordarDatos=true;max-age=${60*60*24*365};path=/`
-    }else if(cookie !== undefined && !recordarCookie){
-        document.cookie = `recordarDatos=;max-age=0;path=/;domain=${window.location.hostname}`;
-    }
-}
-
-export { Logout, secureFetch, cookieGuardarDatos, encontrarCookieDatosGuardados } 
+export { Logout, secureFetch } 

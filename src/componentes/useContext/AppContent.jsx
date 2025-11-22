@@ -24,6 +24,7 @@ import RequireRoleStudent from '../Estudiante/RequireRoleEstudiante';
 import CursosPageStudent from '../Estudiante/CursosPageEstudiante';
 import CursoDetallePageEstudiante from '../Estudiante/CursoDetallePageEstudiante';
 import TareasEstudiante from '../Estudiante/TareasEstudiante';
+import CalificacionesEstudiante from '../Estudiante/Calificaciones/CalificacionesEstudiante';
 
 function AppContent() {
   const { usuario } = useContext(UsuarioContext)
@@ -62,6 +63,7 @@ function AppContent() {
               <Route index element={<CursosPageStudent />} />
               <Route path="cursos/:id" element={<CursoDetallePageEstudiante />} />
               <Route path='tareas' element={<TareasEstudiante />} />
+              <Route path='calificaciones' element={<CalificacionesEstudiante />} />
             </Route>
           </Route>
         </Route>

@@ -1,14 +1,12 @@
 import { useCallback, useContext, useEffect, useState } from "react";
 import { LoadingContext } from "../useContext/LoadingContext";
 import HelpElement from "./HelpElement";
-import { cookieGuardarDatos, encontrarCookieDatosGuardados } from "./scripts/Security";
 import { UsuarioContext } from "../useContext/UsuarioContext";
 
 
 const Login = ({ setFlipped, funcUsuario }) => {
     //cambiar URL del endpoint en cuestion
-    const URL = "https://api-deploy-wyep.onrender.com/api/auth/token/"
-    const automatico_inicio_url = "https://api-deploy-wyep.onrender.com/api/auth/inicioAutomatico" 
+    const URL = "http://localhost:8000/api/auth/token/"
     const { setLoading } = useContext(LoadingContext)
     const [error, setError] = useState(false)
     const [help, setHelp] = useState(false)
@@ -17,67 +15,58 @@ const Login = ({ setFlipped, funcUsuario }) => {
         password: ""
     })
     const [datosRecordados, setDatosRecordados] = useState(null)
-    const { setUsuario } = useContext(UsuarioContext);
-
-    const recordarDatos = () => {
-        if (datosRecordados === null) {
-            setDatosRecordados(true)
-        }else if(datosRecordados === false){
-            document.cookie = `recordarDatos=;max-age=0;path=/;domain=${window.location.hostname}`;
-        }else {
-            setDatosRecordados(prev => !prev)
-        }
-    }
+    const [ usuarioRecordado ] = useState(localStorage.getItem("usuarioGuardado") || null)
+    const { usuario } = useContext(UsuarioContext);
 
 
-    useEffect(() => {
-        if (datosRecordados === null) return
-        cookieGuardarDatos(datosRecordados)
-    }, [datosRecordados])
-
-
-    useEffect(() => {
-        let cookie = encontrarCookieDatosGuardados()
-        if (cookie) {
-            async function inicioAutomatico() {
-                try {
-                    const res = await fetch(automatico_inicio_url, {
-                        method: "POST",
-                        credentials: "include",
-                        headers: { "Content-Type": "application/json" },
-                    });
-                    const data = await res.json()
-                    funcUsuario(data.usuario)
-                } catch (e) {
-                    console.error("Error al iniciar sesión:", e);
-                    return false;
-                }
+useEffect(() => {
+    if(usuarioRecordado){
+        const usuario = localStorage.getItem("usuarioGuardado")
+        const usuarioObj = JSON.parse(usuario) 
+        const inicioAutomatico = async()=>{
+            if(usuarioObj === null) return
+            try {
+                const res = await fetch(URL, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    credentials: 'include',
+                    body: JSON.stringify(usuarioObj)
+                });
+                const data = await res.json()
+                funcUsuario(data)
+            } catch (e) {
+                console.error("Error al iniciar sesión:", e);
+                return false;
             }
-            inicioAutomatico()
         }
-    }, [setUsuario, funcUsuario])
+        inicioAutomatico()
+    }
+}, [funcUsuario, usuarioRecordado, usuario])
 
 
     const saveForm = useCallback((e) => {
         e.preventDefault();
-        if (datosRecordados) {
-            setForm({
+        setForm({
+            username: e.target.usernameR.value,
+            password: e.target.passwordL.value,
+        })
+        if(datosRecordados){
+            localStorage.setItem("usuarioGuardado", JSON.stringify({
                 username: e.target.usernameR.value,
                 password: e.target.passwordL.value,
-                recordar: true
-            })
-        } else if (!datosRecordados) {
-            setForm({
-                username: e.target.usernameR.value,
-                password: e.target.passwordL.value
-            })
+            }))
+        }else if(!datosRecordados){
+            localStorage.removeItem("usuarioGuardado")
         }
     }, [datosRecordados])
+
+
 
     useEffect(() => {
         if (form.username !== "" && form.password !== "") {
             const sendForm = async () => {
                 try {
+                    console.log(form)
                     const datosEnviados = await fetch(URL, {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
@@ -98,6 +87,11 @@ const Login = ({ setFlipped, funcUsuario }) => {
         }
     }, [form, funcUsuario, setLoading])
 
+
+    const btnRecuerdame = () =>{
+        setDatosRecordados(prev =>!prev)
+    }
+
     return (
         <>
             <div className="w-full h-full relative">
@@ -106,7 +100,7 @@ const Login = ({ setFlipped, funcUsuario }) => {
                 <form onSubmit={(e) => saveForm(e)} className="w-full h-full flex flex-col items-center justify-start pt-4 gap-6 text-sm sm:text-base">
                     <input type="text" name="usernameR" id="usernameR" placeholder="Ingresa nick/username" className="text-white bg-gray-50 border border-gray-300 rounded-2xl w-full max-w-60 sm:max-w-96 h-auto p-1.5 sm:p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" required />
                     <input type="password" name="passwordL" id="passwordL" placeholder="Ingresa tu contraseña" autoComplete="off" className="text-white bg-gray-50 border border-gray-300 rounded-2xl w-full max-w-60 sm:max-w-96 h-auto p-1.5 sm:p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                        onFocus={() => setHelp(true)} onBlur={() => setHelp(false)} pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[^\w\s]).+$" minLength={8} maxLength={30} required />
+                    onFocus={() => setHelp(true)} onBlur={() => setHelp(false)} pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[^\w\s]).+$" minLength={8} maxLength={30} required />
                     {/* Inicio de sesión con JWT */}
                     {/* colocar un onclick con savePassword */}
                     <label className="relative inline-flex items-center gap-4 cursor-pointer">
@@ -114,8 +108,8 @@ const Login = ({ setFlipped, funcUsuario }) => {
                         <span className="w-11 h-6 bg-zinc-500 rounded-full peer-checked:bg-sky-600 
                         peer-checked:after:translate-x-full after:content-[''] after:absolute 
                         after:top-[2px] after:left-[2px] after:bg-white after:rounded-full 
-                        after:h-5 after:w-5 after:transition-all" onClick={() => recordarDatos()}></span>
-                        <p className="text-white" onClick={() => recordarDatos()}>Recordar datos</p>
+                        after:h-5 after:w-5 after:transition-all" onClick={() => btnRecuerdame()}></span>
+                        <p className="text-white" onClick={() => btnRecuerdame()}>Recordar datos</p>
                     </label>
                     <div className="flex justify-center items-center flex-col w-fit h-fit p-1 sm:p-4 gap-3">
                         <button type="submit" className="w-full max-w-60 h-fit max-h-24 p-1.5 sm:p-2.5 rounded-2xl text-white bg-gray-900 hover:bg-slate-800 text-center">Iniciar sesión</button>

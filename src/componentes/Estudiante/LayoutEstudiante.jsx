@@ -1,4 +1,3 @@
-import React from 'react'
 import { NavLink, Outlet } from "react-router-dom";
 
 function LayoutEstudiante() {
@@ -11,6 +10,7 @@ function LayoutEstudiante() {
                     <nav className="flex flex-row gap-4">
                         <NavLink to="" className='bg-slate-900 hover:bg-sky-950 rounded-2xl p-2 md:p-4'>Cursos</NavLink>
                         <NavLink to="tareas" className='bg-slate-900 hover:bg-sky-950 rounded-2xl p-2 md:p-4'>Tareas</NavLink>
+                        <NavLink to="calificaciones" className='bg-slate-900 hover:bg-sky-950 rounded-2xl p-2 md:p-4'>📚 Calificaciones</NavLink>
                     </nav>
                     <input className="text-white bg-gray-50 border border-gray-300 rounded-2xl w-full max-w-60 sm:max-w-96 h-auto p-1.5 sm:p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
                     placeholder='Busca un Curso'/>
