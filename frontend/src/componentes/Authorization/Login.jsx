@@ -19,6 +19,7 @@ const Login = ({ setFlipped, funcUsuario }) => {
     const [ usuarioRecordado ] = useState(localStorage.getItem("usuarioGuardado") || null)
     const { usuario } = useContext(UsuarioContext);
 
+    
 
 useEffect(() => {
     setLoading(true)
