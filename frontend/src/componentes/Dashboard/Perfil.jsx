@@ -47,6 +47,27 @@ const Perfil = () => {
     }
   }, [avatarKey]);
 
+  // Asegurar que tenemos el id del usuario en contexto
+  useEffect(() => {
+    if (!usuario || usuario.id) return;
+    let cancelado = false;
+
+    const cargarMe = async () => {
+      try {
+        const me = await apiFetch("/usuarios/me/").catch(() => null);
+        if (!me || cancelado) return;
+        setUsuario((prev) => ({ ...prev, ...me }));
+      } catch {
+        // ignorar errores de /me
+      }
+    };
+
+    cargarMe();
+    return () => {
+      cancelado = true;
+    };
+  }, [usuario, setUsuario]);
+
   // Cargar info real desde API
   useEffect(() => {
     if (!usuario?.role) return;
@@ -484,4 +505,3 @@ const Perfil = () => {
 };
 
 export default Perfil;
-
