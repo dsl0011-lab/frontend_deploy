@@ -226,12 +226,12 @@ class CalificacionViewSet(viewsets.ModelViewSet):
 class TutoriaViewSet(viewsets.ModelViewSet):
     authentication_classes = [CookieJWTAuthentication]
     serializer_class = TutoriaSerializer
-
+    
     def get_permissions(self):
         if self.request.method in SAFE_METHODS:
             return [IsAuthenticated()]
         return [IsTeacherOrAdmin()]
-
+    
     def get_queryset(self):
         user = self.request.user
         qs = Tutoria.objects.select_related("profesor", "alumno")

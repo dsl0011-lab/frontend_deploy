@@ -39,7 +39,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         data.update({
             "role": getattr(self.user, "role", None),
             "username": self.user.username,
-            "gender": self.user.gender
+            "gender": self.user.gender,
         })
         return data
 

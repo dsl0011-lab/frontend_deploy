@@ -84,6 +84,7 @@ export async function getResumenAlumnos() {
   return res.json();
 }
 
+
 export async function deleteTarea(id) {
   const url = buildUrl(`/profesor/tareas/${id}/`);
 
@@ -109,34 +110,35 @@ export async function deleteTarea(id) {
 }
 
 export async function getTutorias(){
-  const res = apiFetch("/profesor/tutorias/");
   const url = `/profesor/tutorias/`
+  let res = apiFetch(url);
   if (res.status === 401) {
     const refreshed = await secureFetch();
     if (refreshed) {
-      return apiFetch(url); // reintento una sola vez
+      return res = apiFetch(url); // reintento una sola vez
     }
   }
+  return res
 }
 
 export async function createTutoria(payload){
+  const url = "/profesor/tutorias/"
   const res = apiFetch("/profesor/tutorias/", {
     method: "POST",
     body: payload,
   });
 
-  const url = "/profesor/tutorias/"
   if (res.status === 401) {
     const refreshed = await secureFetch();
     if (refreshed) {
       return apiFetch(url); // reintento una sola vez
     }
   }
+  return res
 }
 
 export async function getAlumnosCurso(cursoId){
   const res = apiFetch(`/profesor/cursos/${cursoId}/alumnos/`);
-
   const url = `/profesor/cursos/${cursoId}/alumnos/`
   if (res.status === 401) {
     const refreshed = await secureFetch();
@@ -144,5 +146,6 @@ export async function getAlumnosCurso(cursoId){
       return apiFetch(url); // reintento una sola vez
     }
   }
+  return res
 }
 

@@ -59,7 +59,7 @@ const Inicio = () => {
         const tutorias = await getTutorias().catch(() => [])
         if (!alive) return
         setTutoriasAgenda(Array.isArray(tutorias) ? tutorias : [])
-      } catch (e) {
+      } catch{
         if (alive) setErr("No se pudo cargar el resumen")
       } finally {
         if (alive) setLoading(false)
@@ -166,7 +166,7 @@ const Inicio = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/asignaturas" className="text-blue-400 hover:underline">
+                <Link to="/profesor" className="text-blue-400 hover:underline">
                   Mis asignaturas
                 </Link>
               </li>

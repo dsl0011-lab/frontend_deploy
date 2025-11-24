@@ -7,7 +7,7 @@ import PrivateRoute from '../Authorization/PrivateRoute';
 import Perfil from '../Dashboard/Perfil';
 import Asignaturas from '../Dashboard/Asignaturas';
 import AsignaturaDetalle from '../Dashboard/AsignaturaDetalle';
-import Tutorias from '../Tutorias/Tutorias';
+import TutoriasEsqueleto from '../Tutorias/TutoriasEsqueleto';
 
 // --- Profesor ---
 import RequireRole from '../Profesor/RequireRole';
@@ -37,7 +37,8 @@ function AppContent() {
             <Route path='asignaturas' element={<Asignaturas />} />
             <Route path='asignaturas/:id' element={<AsignaturaDetalle />} />
             <Route path='mensajes' element={<MensajeriaPage />} />
-            <Route path='tutorias' element={<Tutorias />} />
+            {/* AQUI PUEDES ENCONTRAR LA LOGICA QUE APLICA LA RUTA DE TUTORIAS SEGUN EL ROL */}
+            <Route path='tutorias' element={<TutoriasEsqueleto />} />
             <Route
               path="profesor"
               element={
