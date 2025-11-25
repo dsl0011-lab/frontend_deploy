@@ -5,7 +5,6 @@ import ChatWindow from './ChatWindow'
 import NuevaConversacionModal from './NuevaConversacionModal'
 import UserDirectory from './UserDirectory'
 import { UsuarioContext } from '../useContext/UsuarioContext'
-import ComponenteLoading from '../PantallaLoading/ComponenteLoading'
 import { LoadingContext } from '../useContext/LoadingContext';
 
 export default function MensajeriaPage() {

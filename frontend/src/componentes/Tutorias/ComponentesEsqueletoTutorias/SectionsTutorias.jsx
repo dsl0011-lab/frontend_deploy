@@ -1,6 +1,6 @@
 import TutoriaCard from './Utilities/TutoriaCard';
 
-function SeccionesTutorias({tutorias}) {
+function SectionsTutorias({tutorias, setRefrescarTutorias}) {
     return (
         <section className="bg-gray-900/40 border border-gray-700 rounded-2xl p-4">
             {tutorias.length === 0 ? (
@@ -11,7 +11,7 @@ function SeccionesTutorias({tutorias}) {
                 // Aqui se ve las tutorias que tiene el usuario
                 <div className="grid gap-4 md:grid-cols-2">
                     {tutorias.map((tutoria) => (
-                        <TutoriaCard key={tutoria.id} tutoria={tutoria} />
+                        <TutoriaCard key={tutoria.id} tutoria={tutoria} setRefrescarTutorias={setRefrescarTutorias}/>
                     ))}
                 </div>
             )}
@@ -19,4 +19,4 @@ function SeccionesTutorias({tutorias}) {
     )
 }
 
-export default SeccionesTutorias
+export default SectionsTutorias

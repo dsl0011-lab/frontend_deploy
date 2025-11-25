@@ -2,13 +2,13 @@ import { useCallback, useContext, useEffect, useState } from "react";
 import { LoadingContext } from "../useContext/LoadingContext";
 import HelpElement from "./HelpElement";
 import { UsuarioContext } from "../useContext/UsuarioContext";
+import { API_BASE } from "./scripts/Security";
 
 
-const Login = ({ setFlipped, funcUsuario }) => {
+const Login = ({ setFlipped, funcUsuario, setError, error }) => {
     //cambiar URL del endpoint en cuestion
-    const URL = "http://localhost:8000/api/auth/token/"
+    const URL = `${API_BASE}api/auth/token/`
     const { setLoading } = useContext(LoadingContext)
-    const [error, setError] = useState(false)
     const [ errorDescripcion, setErrorDescripcion ] = useState("")
     const [help, setHelp] = useState(false)
     const [form, setForm] = useState({
@@ -19,7 +19,6 @@ const Login = ({ setFlipped, funcUsuario }) => {
     const [ usuarioRecordado ] = useState(localStorage.getItem("usuarioGuardado") || null)
     const { usuario } = useContext(UsuarioContext);
 
-    
 
 useEffect(() => {
     setLoading(true)
@@ -39,13 +38,13 @@ useEffect(() => {
                 funcUsuario(data)
             } catch (e) {
                 console.error("Error al iniciar sesión:", e);
+                
                 return false;
             }
         }
         inicioAutomatico()
     }
-    setLoading(false)
-}, [funcUsuario, usuarioRecordado, usuario, setLoading])
+}, [funcUsuario, usuarioRecordado, usuario, setLoading, URL])
 
 
     const saveForm = useCallback((e) => {
@@ -76,19 +75,18 @@ useEffect(() => {
                         credentials: 'include',
                         body: JSON.stringify(form)
                     });
-                    const data = await datosEnviados.json().catch(() => null)
+                    const data = await datosEnviados.json().catch((e) => {setErrorDescripcion(e.message), setError(true)})
                     if (!datosEnviados.ok) return setError(true)
                     if (data) return funcUsuario(data)
                 } catch(e) {
-                    setErrorDescripcion(e)
+                    setErrorDescripcion(e.message)
                     setError(true)
-                } finally {
-                    setLoading(false)
                 }
             }
             sendForm();
         }
-    }, [form, funcUsuario, setLoading])
+        setLoading(false)
+    }, [form, funcUsuario, setLoading, URL, setError])
 
 
     useEffect(()=>console.log(errorDescripcion),[errorDescripcion])

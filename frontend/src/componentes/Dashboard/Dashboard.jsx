@@ -6,26 +6,25 @@ import arrow from '../../assets/btn-arrow.svg'
 import exit from '../../assets/exit.svg'
 import Sidebar from "./Sidebar"
 import Inicio from "./Inicio"
-import ComponenteLoading from "../PantallaLoading/ComponenteLoading"
 
 
 const Dashboard = () => {
-    const { usuario, setUsuario } = useContext(UsuarioContext)
+    const { setUsuario } = useContext(UsuarioContext)
     const [showNB, setShowNB] = useState(false)
-    const location = useLocation(); 
+    const location = useLocation();
 
 
 
     return (
-        <main className="flex h-full min-h-screen min-w-screen w-full bg-gray-50 dark:bg-gray-900">
+        <main className="flex relative h-full min-h-screen min-w-screen w-full bg-gray-50 dark:bg-gray-900">
             <div
                 className={`fixed top-0 left-0 h-full w-64 bg-white shadow-lg 
-                transition-transform duration-1000 ease-in-out z-50
-                ${showNB ? "translate-x-0" : "-translate-x-full"}`}
+                    transition-transform duration-1000 ease-in-out z-50
+                    ${showNB ? "translate-x-0" : "-translate-x-full"}`}
             >
                 <Sidebar showNB={showNB} setShowNB={setShowNB} />
-                <img src={arrow} className="w-8 h-8 m-2 pr-1 rounded-r-lg bg-white hover:bg-gray-400 absolute top-60 right-[-40px]" 
-                onClick={()=>{setShowNB((prev) => !prev)}}
+                <img src={arrow} className="w-8 h-8 m-2 pr-1 rounded-r-lg bg-white hover:bg-gray-400 absolute top-60 right-[-40px]"
+                    onClick={() => { setShowNB((prev) => !prev) }}
                 />
             </div>
             <section className="flex flex-col w-full h-auto p-4 z-0">
@@ -38,14 +37,10 @@ const Dashboard = () => {
                     </button>
                 </article>
                 <article className="flex-1 p-6">
-                    {
-                    usuario ? 
-                    (<>
+                    <>
                         {location.pathname == '/' && <Inicio />}
                         <Outlet />
-                    </>)
-                    : <ComponenteLoading />
-                    }
+                    </>
                 </article>
             </section>
         </main>

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useLocation, useParams, Link } from 'react-router-dom'
 import { apiFetch } from '../Profesor/api'
-import ComponenteLoading from '../PantallaLoading/ComponenteLoading'
+import { ComponenteLoading } from '../PantallaLoading/ComponenteLoading'
 
 export default function AsignaturaDetalle() {
   const { id } = useParams()

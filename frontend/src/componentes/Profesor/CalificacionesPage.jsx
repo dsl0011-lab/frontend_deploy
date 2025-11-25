@@ -13,7 +13,7 @@ export default function CalificacionesPage() {
   return (
     <div>
       <h1 className="text-xl font-bold mb-3">Calificaciones</h1>
-      {
+      {entregas.length === 0 ? <p>No tienes entregas aún.</p> :
         <ul className="space-y-2">
         {entregas.map(e => (
           <li key={e.id} className="border rounded p-3">

@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { apiFetch } from '../Profesor/api';
 import { convertirFecha } from './scripts/conversionFecha'
-import ComponenteLoading from '../PantallaLoading/ComponenteLoading';
 
 const TareasEstudiante = () => {
 const [tareas, setTareas] = useState([]);
@@ -27,7 +26,7 @@ const [tareas, setTareas] = useState([]);
                         </div>
                 </li>))}
             </ul>
-            : tareas.length === 0 ? (<p>No tienes tareas asignadas aún</p>) : (<ComponenteLoading />)
+            : (<p>No tienes tareas asignadas aún</p>)
             }
         </div>
     );

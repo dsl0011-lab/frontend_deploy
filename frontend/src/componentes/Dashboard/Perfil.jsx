@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { UsuarioContext } from "../useContext/UsuarioContext";
 import { apiFetch } from "../Profesor/api";
-import ComponenteLoading from '../PantallaLoading/ComponenteLoading';
+import { ComponenteLoading } from '../PantallaLoading/ComponenteLoading';
 import HelpElement from '../Authorization/HelpElement'
 
 const Perfil = () => {
