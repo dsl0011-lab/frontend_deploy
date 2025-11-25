@@ -3,42 +3,52 @@ import { UsuarioContext } from "../useContext/UsuarioContext";
 import { apiFetch, createTutoria, getTutorias } from "../Profesor/api";
 import NuevaTutoriaModal from "./ComponentesEsqueletoTutorias/Utilities/NuevaTutoriaModal";
 import Aside from "./ComponentesEsqueletoTutorias/Aside";
-import SeccionesTutorias from "./ComponentesEsqueletoTutorias/SectiosTutorias";
-import ComponenteLoading from "../PantallaLoading/ComponenteLoading";
+import SectionsTutorias from "./ComponentesEsqueletoTutorias/SectionsTutorias";
 import Header from "./ComponentesEsqueletoTutorias/Header";
 import { createTutoriaEstudiante } from "./scriptsTutorias";
 
 export default function TutoriasEsqueleto() {
   const { usuario } = useContext(UsuarioContext);
   const [tutorias, setTutorias] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [ refrescarTutorias, setRefrescarTutorias ] = useState(false)
+  // const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [cursosDisponibles, setCursosDisponibles] = useState([]);
-  const puedeCrear = usuario?.role === "T" || usuario?.role === "S";
+  const puedeCrear =  usuario?.role === "S";
 
   useEffect(() => {
     let alive = true;
     (async () => {
       setError("");
-      setLoading(true);
       try {
         const data = await getTutorias();
         if (!alive) return;
-        setTutorias(Array.isArray(data) ? data : []);
+
+        //se ordenan las tutorias por estado
+        const ordenEstados = {
+          pendiente: 1,
+          confirmada: 2,
+          completada: 3,
+          cancelada: 4
+        };
+        let listaOrdenada = data.sort((a, b) => {
+          return ordenEstados[a.estado] - ordenEstados[b.estado]
+        })
+        
+        setTutorias(Array.isArray(listaOrdenada) ? listaOrdenada : []);
       } catch (err) {
         if (alive) setError(err.message || "No se pudieron cargar las tutorias");
-      } finally {
-        if (alive) setLoading(false);
       }
     })();
+    setRefrescarTutorias(false)
     return () => {
       alive = false;
     };
-  }, []);
+  }, [refrescarTutorias]);
 
   useEffect(() => {
-    if (!puedeCrear) return;
+    if (!puedeCrear)return;
     let alive = true;
     (async () => {
       try {
@@ -59,7 +69,8 @@ export default function TutoriasEsqueleto() {
     return () => {
       alive = false;
     };
-  }, [puedeCrear, usuario]);
+  }, [puedeCrear, usuario ]);
+
 
 
   const stats = useMemo(() => {
@@ -132,22 +143,18 @@ export default function TutoriasEsqueleto() {
   };
 
 
-  if (loading) {
-    return <ComponenteLoading />;
-  }
-
   return (
     <div className="w-full max-w-6xl mx-auto p-4 md:p-6 text-white">
-      <Header puedeCrear={puedeCrear} setShowModal={setShowModal} />
+      <Header puedeCrear={puedeCrear} setShowModal={setShowModal} usuario={usuario} />
       {error && <div className="mb-4 text-sm text-red-400">{error}</div>}
 
       <div className="grid gap-6 lg:grid-cols-[260px,1fr]">
 
         {/* aqui se muestra un cuadro con las estadisticas y las proximas tutorias */}
-        <Aside stats={stats} proximasTutorias={proximasTutorias} usuario={usuario} />
+        <Aside stats={stats} proximasTutorias={proximasTutorias} />
 
         {/* aqui se muestra la logica de la tutorias que tiene el usaurio */}
-        <SeccionesTutorias tutorias={tutorias} />
+        <SectionsTutorias tutorias={tutorias} setRefrescarTutorias={setRefrescarTutorias}/>
       </div>
 
       {showModal && (

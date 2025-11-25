@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { apiFetch } from "../Profesor/api";
 import { imagenesRandom } from './scripts/fotos'
-import ComponenteLoading from '../PantallaLoading/ComponenteLoading';
 
 const CursosPageStudent = () => {
   const [ cursos, setCursos ] = useState([])
@@ -32,7 +31,7 @@ const CursosPageStudent = () => {
             </div>
         </div>
       ))
-      : (<ComponenteLoading />)
+      : <p>cargando...</p>
     }
     </div>
   );

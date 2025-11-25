@@ -1,6 +1,6 @@
-import { secureFetch } from "../Authorization/scripts/Security";
+import { secureFetch, API_BASE as API } from "../Authorization/scripts/Security";
 
-const RAW_API = (import.meta.env.VITE_API_URL || "http://localhost:8000").trim();
+const RAW_API = (import.meta.env.VITE_API_URL || `${API}`).trim();
 const API_BASE = RAW_API.replace(/\/+$/, "").replace(/\/api$/, "");
 
 const buildUrl = (path = "") => {

@@ -161,6 +161,7 @@ CORS_ALLOWED_ORIGINS = [
     "https://api-deploy-wyep.onrender.com",
     "https://frontend-deploy-eosin.vercel.app",
     "https://frontend-deploy-qbcz.vercel.app", 
+    'http://localhost:5174'
 ]
 
 CORS_ALLOW_CREDENTIALS = True

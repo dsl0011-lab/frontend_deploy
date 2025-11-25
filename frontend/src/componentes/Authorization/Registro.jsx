@@ -1,10 +1,11 @@
 import { useEffect, useState, useContext } from "react"
 import { LoadingContext } from "../useContext/LoadingContext";
 import HelpElement from "./HelpElement";
+import { API_BASE } from "./scripts/Security";
 
 const Register = ({ funcUsuario, setFlipped }) => {
     const { setLoading } = useContext(LoadingContext)
-    const URL = "http://localhost:8000/api/auth/register/"
+    const URL = `${API_BASE}/api/auth/register/`
     const [ error, setError ] = useState(false)
     const [ help, setHelp ] = useState(false)
     const [ errorDescripcion, setErrorDescripcion ] = useState("")

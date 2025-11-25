@@ -3,14 +3,14 @@ import { UsuarioContext } from "../useContext/UsuarioContext"
 import { Link } from "react-router-dom"
 import { apiFetch, getTutorias } from "../Profesor/api"
 import CalendarioTareas from "./CalendarioTareas"
-import ComponenteLoading from '../PantallaLoading/ComponenteLoading'
+import { MiniComponenteLoading } from '../PantallaLoading/ComponenteLoading'
 
 const Inicio = () => {
   const { usuario } = useContext(UsuarioContext)
 
-  const [loading, setLoading] = useState(false)
+  const [loading] = useState(false)
   const [err, setErr] = useState("")
-
+  const [ requestFinalizada, setRequestFinalizada ] = useState(false)
   // Datos para alumno
   const [cursos, setCursos] = useState([])
   const [tareas, setTareas] = useState([])
@@ -22,7 +22,6 @@ const Inicio = () => {
 
 
   useEffect(() => {
-    setLoading(true)
     let alive = true
     async function load() {
       setErr("")
@@ -62,15 +61,18 @@ const Inicio = () => {
         if (!alive) return
         setTutoriasAgenda(Array.isArray(tutorias) ? tutorias : [])
       } catch {
-        if (alive) setErr("No se pudo cargar el resumen")
+        if (alive){
+          setErr("No se pudo cargar el resumen")
+          setRequestFinalizada(true)
+        } 
       }
     }
     load()
-    setLoading(false)
     return () => {
       alive = false
     }
-  }, [usuario?.role])
+  }, [usuario?.role, requestFinalizada])
+
 
 
   const bienvenida = useMemo(() => {
@@ -99,51 +101,51 @@ const Inicio = () => {
 
       {err && <div className="text-sm text-red-400 mb-3">{err}</div>}
 
-      {loading && <div className="text-gray-300">{<ComponenteLoading />}</div>}
-
       {/* Resumen para Alumno */}
       {usuario?.role === "S" && !loading && (
-        <div className="grid gap-4 md:grid-cols-3 items-start">
-          <div className="p-4 rounded-lg bg-gray-800 text-white">
-            <div className="text-sm opacity-70">Asignaturas inscritas</div>
-            <div className="text-3xl font-bold">{cursos.length}</div>
-            <Link to="/asignaturas" className="text-blue-400 hover:underline mt-2 inline-block">
-              Ver asignaturas
-            </Link>
-          </div>
-          <div className="p-4 rounded-lg bg-gray-800 text-white md:col-span-2">
-            <div className="flex items-center justify-between mb-2">
-              <div className="text-sm opacity-70">Proximas tareas</div>
-              <Link to="/asignaturas" className="text-blue-400 hover:underline">
-                Ver todas
+        err !== "No se pudo cargar el resumen" && requestFinalizada === true ? (<MiniComponenteLoading />) : (
+          <div className="grid gap-4 md:grid-cols-3 items-start">
+            <div className="p-4 rounded-lg bg-gray-800 text-white">
+              <div className="text-sm opacity-70">Asignaturas inscritas</div>
+              <div className="text-3xl font-bold">{cursos.length}</div>
+              <Link to="/asignaturas" className="text-blue-400 hover:underline mt-2 inline-block">
+                Ver asignaturas
               </Link>
             </div>
-            {proximasTareas.length === 0 ? (
-              <div className="text-sm opacity-70">No hay tareas cercanas</div>
-            ) : (
-              <ul className="space-y-2">
-                {proximasTareas.map((t) => {
-                  const c = cursos.find((x) => String(x.id) === String(t.curso))
-                  return (
-                    <li key={t.id} className="bg-gray-900 rounded p-3">
-                      <div className="flex items-center justify-between">
-                        <span className="font-medium">{t.titulo}</span>
-                        <span className="text-xs opacity-80">
-                          {t.fecha_entrega ? new Date(t.fecha_entrega).toLocaleString() : "Sin fecha"}
-                        </span>
-                      </div>
-                      {c && <div className="text-xs opacity-70 mt-1">Asignatura: {c.nombre}</div>}
-                    </li>
-                  )
-                })}
-              </ul>
-            )}
+            <div className="p-4 rounded-lg bg-gray-800 text-white md:col-span-2">
+              <div className="flex items-center justify-between mb-2">
+                <div className="text-sm opacity-70">Proximas tareas</div>
+                <Link to="/asignaturas" className="text-blue-400 hover:underline">
+                  Ver todas
+                </Link>
+              </div>
+              {proximasTareas.length === 0 ? (
+                <div className="text-sm opacity-70">No hay tareas cercanas</div>
+              ) : (
+                <ul className="space-y-2">
+                  {proximasTareas.map((t) => {
+                    const c = cursos.find((x) => String(x.id) === String(t.curso))
+                    return (
+                      <li key={t.id} className="bg-gray-900 rounded p-3">
+                        <div className="flex items-center justify-between">
+                          <span className="font-medium">{t.titulo}</span>
+                          <span className="text-xs opacity-80">
+                            {t.fecha_entrega ? new Date(t.fecha_entrega).toLocaleString() : "Sin fecha"}
+                          </span>
+                        </div>
+                        {c && <div className="text-xs opacity-70 mt-1">Asignatura: {c.nombre}</div>}
+                      </li>
+                    )
+                  })}
+                </ul>
+              )}
+            </div>
           </div>
-        </div>
-      )}
+
+        ))}
 
       {/* Resumen para Profesor/Admin */}
-      {(usuario?.role === "T" || usuario?.role === "A") && !loading && (
+      {(usuario?.role === "T" || usuario?.role === "A") && (
         <div className="grid gap-4 md:grid-cols-3 items-start">
           <div className="p-4 rounded-lg bg-gray-800 text-white">
             <div className="text-sm opacity-70">Cursos impartidos</div>
@@ -176,7 +178,8 @@ const Inicio = () => {
           </div>
         </div>
       )}
-      {!loading && (
+
+      {!loading ? <CalendarioTareas/> : (
         <div className="mt-6">
           <CalendarioTareas
             tareas={usuario?.role === "S" ? tareas : misTareas}

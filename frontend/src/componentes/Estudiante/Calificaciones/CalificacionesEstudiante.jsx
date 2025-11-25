@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from "axios";
+import { API_BASE } from '../../Authorization/scripts/Security';
 
 const CalificacionesEstudiante = () => {
   const [calificaciones, setCalificaciones] = useState([]);
@@ -21,13 +22,13 @@ const CalificacionesEstudiante = () => {
       };
 
       const respCalif = await axios.get(
-        'http://localhost:8000/api/calificaciones/notas/',
+        (`${API_BASE}/api/calificaciones/notas/`),
         config
       );
       setCalificaciones(respCalif.data);
 
       const respEstad = await axios.get(
-        'http://localhost:8000/api/calificaciones/notas/estadisticas/',
+        `${API_BASE}/api/calificaciones/notas/estadisticas/`,
         config
       );
       setEstadisticas(respEstad.data);

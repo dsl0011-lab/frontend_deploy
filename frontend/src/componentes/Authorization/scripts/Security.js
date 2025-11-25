@@ -1,6 +1,5 @@
 //cierra la sesion eliminando el token valido de la cookie HTTP actual del usuario loggeado 
-const API_BASE = "http://localhost:8000/api"
-
+const API_BASE = "http://localhost:8000/"
 
 
 const Logout = () => {
@@ -8,7 +7,7 @@ const Logout = () => {
     let cookie = document.cookie
     cookie = cookie.split(";").flat().find(item => item.startsWith(" recordarDatos"))
     if(!cookie){
-        fetch("http://localhost:8000/api/auth/logout", {
+        fetch(`${API_BASE}/api/auth/logout`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             credentials: "include",
@@ -22,7 +21,7 @@ const Logout = () => {
 
 async function secureFetch() {
     try {
-        const res = await fetch(`${API_BASE}/auth/token/refresh_cookie/`, {
+        const res = await fetch(`${API_BASE}/api/auth/token/refresh_cookie/`, {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
@@ -37,4 +36,4 @@ async function secureFetch() {
 
 
 
-export { Logout, secureFetch } 
+export { Logout, secureFetch, API_BASE } 

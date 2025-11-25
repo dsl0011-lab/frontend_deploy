@@ -3,7 +3,6 @@ import { useParams } from "react-router-dom";
 import { apiFetch } from '../Profesor/api';
 import { imagenesRandom } from './scripts/fotos'
 import { convertirFecha } from './scripts/conversionFecha'
-import ComponenteLoading from '../PantallaLoading/ComponenteLoading'
 import { LoadingContext } from '../useContext/LoadingContext';
 
 function CursoDetallePageEstudiante() {
