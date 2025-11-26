@@ -3,7 +3,7 @@ import { getAlumnosCurso } from "../../../Profesor/api";
 import ComponentesTutoriaModal from "./ComponentesTutoriaModal";
 import { UsuarioContext } from "../../../useContext/UsuarioContext";
 
-const estados = [
+const estadosBase = [
   { value: "pendiente", label: "Pendiente" },
   { value: "confirmada", label: "Confirmada" },
   { value: "completada", label: "Completada" },
@@ -27,6 +27,13 @@ export default function NuevaTutoriaModal({ onSave, onClose, cursos = [] }) {
   const [loadingAlumnos, setLoadingAlumnos] = useState(false);
   const [errorAlumnos, setErrorAlumnos] = useState("");
   const { usuario } = useContext(UsuarioContext);
+
+  // Para profesores, las tutorías nuevas deben salir directamente como "confirmada"
+  useEffect(() => {
+    if (usuario?.role === "T") {
+      setForm((prev) => ({ ...prev, estado: "confirmada" }));
+    }
+  }, [usuario]);
 
 
   useEffect(() => {
@@ -124,7 +131,11 @@ export default function NuevaTutoriaModal({ onSave, onClose, cursos = [] }) {
           alumnos={alumnos}
           loadingAlumnos={loadingAlumnos}
           errorAlumnos={errorAlumnos}
-          estados={estados}
+          estados={
+            usuario?.role === "T"
+              ? estadosBase.filter((e) => e.value === "confirmada")
+              : estadosBase
+          }
           handleChange={handleChange}
           handleSubmit={handleSubmit}
           onClose={onClose}

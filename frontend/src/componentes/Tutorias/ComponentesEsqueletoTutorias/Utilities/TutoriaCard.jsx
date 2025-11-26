@@ -85,9 +85,20 @@ export default function TutoriaCard({ tutoria, setRefrescarTutorias }) {
         <button className="bg-red-800 w-fit min-w-24 h-fit p-1 rounded-xl" onClick={()=>funtEstado("cancelada", tutoria.id)}>Cancelar</button>
       </div>}
       {/* cancelar tutorias previamente confirmadas */}
-      {tutoria.estado === "confirmada" &&
-      <div className="w-full h-fit p-2 flex items-end justify-end">
-        <button className="bg-red-800 w-fit min-w-24 h-fit p-1 rounded-xl" onClick={()=>funtEstado("cancelada", tutoria.id)}>Cancelar</button>
+      {tutoria.estado === "confirmada" && usuario?.role === "T" &&
+      <div className="w-full h-fit p-2 flex items-end justify-end gap-2">
+        <button
+          className="bg-red-800 w-fit min-w-24 h-fit p-1 rounded-xl"
+          onClick={()=>funtEstado("cancelada", tutoria.id)}
+        >
+          Cancelar
+        </button>
+        <button
+          className="bg-red-900 w-fit min-w-24 h-fit p-1 rounded-xl"
+          onClick={()=>funcEliminar(tutoria.id)}
+        >
+          Eliminar
+        </button>
       </div>}
       {/* eliminar la tutoria (solo si esta cancelada) */}
       {tutoria.estado === "cancelada" &&

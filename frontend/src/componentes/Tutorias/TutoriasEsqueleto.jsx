@@ -15,8 +15,8 @@ export default function TutoriasEsqueleto() {
   const [error, setError] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [cursosDisponibles, setCursosDisponibles] = useState([]);
-  const puedeCrear =  usuario?.role === "S";
-  const [ requestFinalizada, setRequestFinalizada ] = useState(false)
+  const puedeCrear =  usuario?.role === "S" || usuario?.role === "T";
+  const [requestFinalizada, setRequestFinalizada] = useState(false);
 
   useEffect(() => {
     let alive = true;
@@ -52,7 +52,7 @@ export default function TutoriasEsqueleto() {
   }, [refrescarTutorias]);
 
   useEffect(() => {
-    if (!puedeCrear)return;
+    if (!puedeCrear) return;
     let alive = true;
     (async () => {
       try {

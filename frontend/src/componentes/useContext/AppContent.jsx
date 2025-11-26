@@ -16,6 +16,7 @@ import CursosPage from '../Profesor/CursosPage';
 import CursoDetallePage from '../Profesor/CursoDetallePage';
 import TareasPage from '../Profesor/TareasPage';
 import CalificacionesPage from '../Profesor/CalificacionesPage';
+import ExamenesPage from '../Profesor/ExamenesPage';
 import MensajeriaPage from '../Mensajeria/MensajeriaPage';
 
 // --- Estudiante ---
@@ -51,6 +52,7 @@ function AppContent() {
               <Route path="cursos/:id" element={<CursoDetallePage />} />
               <Route path="tareas" element={<TareasPage />} />
               <Route path="calificaciones" element={<CalificacionesPage />} />
+              <Route path="examenes" element={<ExamenesPage />} />
             </Route>
             {/* ruta para mostrar el componente estudiante */}
             <Route

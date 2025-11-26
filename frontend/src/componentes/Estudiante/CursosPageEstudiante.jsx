@@ -10,15 +10,16 @@ const CursosPageStudent = () => {
   const [ requestFinalizada, setRequestFinalizada ] = useState(false)
 
   useEffect(()=>{
-      apiFetch("/estudiante/cursos/", ).then(setCursos).catch(setRequestFinalizada(true)); 
-      setRequestFinalizada(true)
+      apiFetch("/estudiante/cursos/", ).then(setCursos)
+      .catch(() => {setRequestFinalizada(true),setRequestFinalizada(true)})
+      .finally(() =>{ setTimeout(() => setRequestFinalizada(true), 20) }); 
   }, [])
 
   const verCurso = (id) =>{
     navigate(`/estudiante/cursos/${id}`)
   }
 
-  if(!requestFinalizada && cursos.length === 0)return <><MiniComponenteLoading /></>
+  if(!requestFinalizada)return <><MiniComponenteLoading /></>
 
   return (
     <div className="text-xs md:text-base xl:text-2xl flex flex-wrap items-center justify-evenly w-full h-full gap-4">

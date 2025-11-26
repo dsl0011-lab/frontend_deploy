@@ -126,3 +126,34 @@ class Asistencia(models.Model):
     def __str__(self):
         estado = "Presente" if self.presente else ("Falta Justificada" if self.justificada else "Falta")
         return f"{self.estudiante.username} - {self.curso.nombre} - {self.fecha}: {estado}"
+
+
+class EventoExamen(models.Model):
+    """
+    Evento de examen para mostrar en calendarios (independiente de la nota).
+    """
+    curso = models.ForeignKey(
+        Curso,
+        on_delete=models.CASCADE,
+        related_name="eventos_examen",
+    )
+    profesor = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="eventos_examen_creados",
+    )
+    titulo = models.CharField(max_length=200)
+    descripcion = models.TextField(blank=True)
+    fecha_examen = models.DateTimeField()
+    visible_estudiantes = models.BooleanField(default=True)
+    creado_en = models.DateTimeField(auto_now_add=True)
+    actualizado = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["fecha_examen"]
+        indexes = [
+            models.Index(fields=["curso", "fecha_examen"]),
+        ]
+
+    def __str__(self) -> str:
+        return f"Examen {self.titulo} - {self.curso.nombre} ({self.fecha_examen})"

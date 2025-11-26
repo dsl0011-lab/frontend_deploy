@@ -1,19 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { API_BASE } from '../../Authorization/scripts/Security';
-import { MiniComponenteLoading } from '../../PantallaLoading/ComponenteLoading';
+import { API_BASE } from "../../Authorization/scripts/Security";
+import { MiniComponenteLoading } from "../../PantallaLoading/ComponenteLoading";
 
 const CalificacionesEstudiante = () => {
   const [calificaciones, setCalificaciones] = useState([]);
   const [estadisticas, setEstadisticas] = useState([]);
-  const [requestFinalizada, setRequestFinalizada] = useState(false);
-  const [vistaActual, setVistaActual] = useState('calificaciones');
-  const [cursoSeleccionado, setCursoSeleccionado] = useState('todos');
+  const [vistaActual, setVistaActual] = useState("calificaciones");
+  const [cursoSeleccionado, setCursoSeleccionado] = useState("todos");
+  const [ requestFinalizada, setRequestFinalizada ] = useState(false)
 
   useEffect(() => {
     cargarDatos();
   }, []);
-
 
   const cargarDatos = async () => {
     try {
@@ -21,19 +20,30 @@ const CalificacionesEstudiante = () => {
         withCredentials: true,
       };
 
-      const respCalif = await axios.get(
-        (`${API_BASE}api/calificaciones/notas/`),
-        config
-      );
-      setCalificaciones(respCalif.data);
+      const [respCalif, respTareas, respEstad] = await Promise.all([
+        axios.get(`${API_BASE}/api/calificaciones/notas/`, config),
+        axios.get(`${API_BASE}/api/estudiante/calificacion/`, config),
+        axios.get(`${API_BASE}/api/calificaciones/notas/estadisticas/`, config),
+      ]);
 
-      const respEstad = await axios.get(
-        `${API_BASE}api/calificaciones/notas/estadisticas/`,
-        config
-      );
-      setEstadisticas(respEstad.data);
+      const notas = Array.isArray(respCalif.data) ? respCalif.data : [];
+      const tareasRaw = Array.isArray(respTareas.data) ? respTareas.data : [];
+
+      const tareasAdaptadas = tareasRaw.map((t) => ({
+        id: `T-${t.id}`,
+        curso: t.curso,
+        curso_nombre: t.curso_nombre,
+        fecha_evaluacion: t.fecha_evaluacion,
+        nombre_evaluacion: t.tarea_titulo || "Tarea",
+        nota: t.nota,
+        tipo_evaluacion: "TAREA",
+        calificacion_texto: t.calificacion_texto,
+      }));
+
+      setCalificaciones([...notas, ...tareasAdaptadas]);
+      setEstadisticas(Array.isArray(respEstad.data) ? respEstad.data : []);
     } catch (error) {
-      console.error('Error al cargar calificaciones:', error);
+      console.error("Error al cargar calificaciones:", error);
       setRequestFinalizada(true);
     } finally {
       setRequestFinalizada(true);
@@ -41,66 +51,72 @@ const CalificacionesEstudiante = () => {
   };
 
   const obtenerColorNota = (nota) => {
-    if (nota < 5) return 'text-red-600 bg-red-50';
-    if (nota < 6) return 'text-orange-600 bg-orange-50';
-    if (nota < 7) return 'text-yellow-600 bg-yellow-50';
-    if (nota < 9) return 'text-blue-600 bg-blue-50';
-    return 'text-green-600 bg-green-50';
+    if (nota < 5) return "text-red-600 bg-red-50";
+    if (nota < 6) return "text-orange-600 bg-orange-50";
+    if (nota < 7) return "text-yellow-600 bg-yellow-50";
+    if (nota < 9) return "text-blue-600 bg-blue-50";
+    return "text-green-600 bg-green-50";
   };
 
   const obtenerIconoTipo = (tipo) => {
     const iconos = {
-      'EXAMEN': '📝',
-      'PROYECTO': '📊',
-      'PRACTICA': '💻',
-      'PARTICIPACION': '🙋'
+      EXAMEN: "📝",
+      PROYECTO: "📁",
+      PRACTICA: "🧪",
+      PARTICIPACION: "💬",
+      TAREA: "📄",
     };
-    return iconos[tipo] || '📄';
+    return iconos[tipo] || "📘";
   };
 
-  const calificacionesFiltradas = cursoSeleccionado === 'todos'
-    ? calificaciones
-    : calificaciones.filter(c => c.curso === parseInt(cursoSeleccionado));
+  const calificacionesFiltradas =
+    cursoSeleccionado === "todos"
+      ? calificaciones
+      : calificaciones.filter(
+          (c) => c.curso === parseInt(cursoSeleccionado, 10)
+        );
 
-  const cursosUnicos = [...new Set(calificaciones.map(c => c.curso))];
+  const cursosUnicos = [
+    ...new Set(calificaciones.map((c) => c.curso).filter(Boolean)),
+  ];
 
-  if (requestFinalizada) {
-    return (
-        <><MiniComponenteLoading /></>
-    );
-  }
+  if(!requestFinalizada) return <><MiniComponenteLoading /></>
 
   return (
     <div className="container mx-auto px-4 py-6">
       <div className="mb-6">
-        <h1 className="text-3xl font-bold text-white mb-2">Mis Calificaciones</h1>
-        <p className="text-gray-400">Consulta tus notas y estadísticas académicas</p>
+        <h1 className="text-3xl font-bold text-white mb-2">
+          Mis Calificaciones
+        </h1>
+        <p className="text-gray-400">
+          Consulta tus notas y estadísticas académicas
+        </p>
       </div>
 
       <div className="flex space-x-2 mb-6 border-b border-gray-700">
         <button
-          onClick={() => setVistaActual('calificaciones')}
+          onClick={() => setVistaActual("calificaciones")}
           className={`px-4 py-2 font-medium transition-colors ${
-            vistaActual === 'calificaciones'
-              ? 'border-b-2 border-blue-600 text-blue-400'
-              : 'text-gray-400 hover:text-blue-400'
+            vistaActual === "calificaciones"
+              ? "border-b-2 border-blue-600 text-blue-400"
+              : "text-gray-400 hover:text-blue-400"
           }`}
         >
-          📚 Calificaciones
+          Calificaciones
         </button>
         <button
-          onClick={() => setVistaActual('estadisticas')}
+          onClick={() => setVistaActual("estadisticas")}
           className={`px-4 py-2 font-medium transition-colors ${
-            vistaActual === 'estadisticas'
-              ? 'border-b-2 border-blue-600 text-blue-400'
-              : 'text-gray-400 hover:text-blue-400'
+            vistaActual === "estadisticas"
+              ? "border-b-2 border-blue-600 text-blue-400"
+              : "text-gray-400 hover:text-blue-400"
           }`}
         >
-          📊 Estadísticas
+          Estadísticas
         </button>
       </div>
 
-      {vistaActual === 'calificaciones' && (
+      {vistaActual === "calificaciones" && (
         <div>
           <div className="mb-4">
             <select
@@ -109,11 +125,13 @@ const CalificacionesEstudiante = () => {
               className="px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-blue-500"
             >
               <option value="todos">Todos los cursos</option>
-              {cursosUnicos.map(cursoId => {
-                const calif = calificaciones.find(c => c.curso === cursoId);
+              {cursosUnicos.map((cursoId) => {
+                const calif = calificaciones.find(
+                  (c) => c.curso === cursoId
+                );
                 return (
                   <option key={cursoId} value={cursoId}>
-                    {calif?.curso_nombre}
+                    {calif?.curso_nombre || `Curso ${cursoId}`}
                   </option>
                 );
               })}
@@ -145,13 +163,19 @@ const CalificacionesEstudiante = () => {
                 <tbody className="bg-gray-800 divide-y divide-gray-700">
                   {calificacionesFiltradas.length === 0 ? (
                     <tr>
-                      <td colSpan="5" className="px-6 py-8 text-center text-gray-500">
+                      <td
+                        colSpan={5}
+                        className="px-6 py-8 text-center text-gray-500"
+                      >
                         No hay calificaciones registradas
                       </td>
                     </tr>
                   ) : (
                     calificacionesFiltradas.map((calif) => (
-                      <tr key={calif.id} className="hover:bg-gray-700 transition-colors">
+                      <tr
+                        key={calif.id}
+                        className="hover:bg-gray-700 transition-colors"
+                      >
                         <td className="px-6 py-4">
                           <div className="flex items-center">
                             <span className="text-2xl mr-2">
@@ -171,15 +195,27 @@ const CalificacionesEstudiante = () => {
                           {calif.curso_nombre}
                         </td>
                         <td className="px-6 py-4 text-sm text-gray-400">
-                          {new Date(calif.fecha_evaluacion).toLocaleDateString('es-ES')}
+                          {calif.fecha_evaluacion
+                            ? new Date(
+                                calif.fecha_evaluacion
+                              ).toLocaleDateString("es-ES")
+                            : "-"}
                         </td>
                         <td className="px-6 py-4">
-                          <span className={`px-3 py-1 rounded-full text-lg font-bold ${obtenerColorNota(calif.nota)}`}>
+                          <span
+                            className={`px-3 py-1 rounded-full text-lg font-bold ${obtenerColorNota(
+                              calif.nota
+                            )}`}
+                          >
                             {calif.nota}
                           </span>
                         </td>
                         <td className="px-6 py-4">
-                          <span className={`px-3 py-1 rounded-full text-sm font-medium ${obtenerColorNota(calif.nota)}`}>
+                          <span
+                            className={`px-3 py-1 rounded-full text-sm font-medium ${obtenerColorNota(
+                              calif.nota
+                            )}`}
+                          >
                             {calif.calificacion_texto}
                           </span>
                         </td>
@@ -193,34 +229,44 @@ const CalificacionesEstudiante = () => {
         </div>
       )}
 
-      {vistaActual === 'estadisticas' && (
+      {vistaActual === "estadisticas" && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {estadisticas.length === 0 ? (
             <div className="col-span-full text-center text-gray-400 py-8">
-              No hay estadísticas disponibles. Necesitas tener calificaciones registradas.
+              No hay estadísticas disponibles. Necesitas tener calificaciones
+              registradas.
             </div>
           ) : (
             estadisticas.map((est) => (
-              <div key={est.curso_id} className="bg-gray-800 rounded-lg shadow p-6">
+              <div
+                key={est.curso_id}
+                className="bg-gray-800 rounded-lg shadow p-6"
+              >
                 <h3 className="text-lg font-bold text-white mb-4">
                   {est.curso_nombre}
                 </h3>
-                
+
                 <div className="mb-4">
                   <div className="flex justify-between items-center mb-2">
-                    <span className="text-sm text-gray-400">Nota Media</span>
-                    <span className={`text-3xl font-bold ${obtenerColorNota(est.media_calificaciones)}`}>
+                    <span className="text-sm text-gray-400">Nota media</span>
+                    <span className="text-3xl font-bold text-emerald-400">
                       {est.media_calificaciones}
                     </span>
                   </div>
                   <div className="w-full bg-gray-700 rounded-full h-2">
                     <div
                       className={`h-2 rounded-full transition-all ${
-                        est.media_calificaciones >= 9 ? 'bg-green-500' :
-                        est.media_calificaciones >= 7 ? 'bg-blue-500' :
-                        est.media_calificaciones >= 5 ? 'bg-yellow-500' : 'bg-red-500'
+                        est.media_calificaciones >= 9
+                          ? "bg-green-500"
+                          : est.media_calificaciones >= 7
+                          ? "bg-blue-500"
+                          : est.media_calificaciones >= 5
+                          ? "bg-yellow-500"
+                          : "bg-red-500"
                       }`}
-                      style={{ width: `${(est.media_calificaciones / 10) * 100}%` }}
+                      style={{
+                        width: `${(est.media_calificaciones / 10) * 100}%`,
+                      }}
                     />
                   </div>
                 </div>
@@ -228,18 +274,26 @@ const CalificacionesEstudiante = () => {
                 <div className="pt-4 border-t border-gray-700">
                   <div className="flex justify-between items-center">
                     <span className="text-sm text-gray-400">Asistencia</span>
-                    <span className={`text-xl font-bold ${
-                      est.porcentaje_asistencia >= 80 ? 'text-green-400' :
-                      est.porcentaje_asistencia >= 60 ? 'text-yellow-400' : 'text-red-400'
-                    }`}>
+                    <span
+                      className={`text-xl font-bold ${
+                        est.porcentaje_asistencia >= 80
+                          ? "text-green-400"
+                          : est.porcentaje_asistencia >= 60
+                          ? "text-yellow-400"
+                          : "text-red-400"
+                      }`}
+                    >
                       {est.porcentaje_asistencia}%
                     </span>
                   </div>
                   <div className="w-full bg-gray-700 rounded-full h-2 mt-2">
                     <div
                       className={`h-2 rounded-full transition-all ${
-                        est.porcentaje_asistencia >= 80 ? 'bg-green-500' :
-                        est.porcentaje_asistencia >= 60 ? 'bg-yellow-500' : 'bg-red-500'
+                        est.porcentaje_asistencia >= 80
+                          ? "bg-green-500"
+                          : est.porcentaje_asistencia >= 60
+                          ? "bg-yellow-500"
+                          : "bg-red-500"
                       }`}
                       style={{ width: `${est.porcentaje_asistencia}%` }}
                     />

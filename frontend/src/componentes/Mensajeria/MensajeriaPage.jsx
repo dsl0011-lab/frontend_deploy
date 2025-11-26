@@ -18,9 +18,10 @@ export default function MensajeriaPage() {
   const [ requestFinalizada, setRequestFinalizada ] = useState(false)
 
   React.useEffect(() => { 
-      listarConversaciones().then(setConvs).catch(()=>setErr('No se pudieron cargar las conversaciones')) 
-      setRequestFinalizada(true)
-  }, [])
+      listarConversaciones().then(setConvs)
+      .catch(()=>{setErr('No se pudieron cargar las conversaciones'); setRequestFinalizada(true)})
+      .finally(()=>{setTimeout(() => setRequestFinalizada(true), 20)})
+  }, [requestFinalizada])
 
   React.useEffect(() => {
     let alive = true
@@ -31,7 +32,8 @@ export default function MensajeriaPage() {
         await marcarLeidos(sel.id)
         setConvs(prev => prev.map(x => x.id === sel.id ? { ...x, no_leidos: 0 } : x))
       } catch(e) {setErr(e), setRequestFinalizada(true)}
-    }).catch(()=>{setRequestFinalizada(true)})
+    }).catch(()=>{setRequestFinalizada(true)}
+    ).finally(()=>{ setRequestFinalizada(true)})
     return ()=> { alive = false }
   }, [sel?.id])
 
@@ -87,7 +89,7 @@ export default function MensajeriaPage() {
     }
   }
 
-  if(!requestFinalizada) return(<><MiniComponenteLoading /></>)
+  if(!requestFinalizada) return<><MiniComponenteLoading /></>
 
   return (
     <div className="min-h-[70vh] flex text-white dark:bg-gray-800 rounded-lg shadow overflow-hidden">

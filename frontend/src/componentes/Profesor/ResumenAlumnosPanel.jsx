@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { getResumenAlumnos } from "./api";
+import AsistenciaAlumnoModal from "./AsistenciaAlumnoModal";
 
 export default function AsideAlumnos() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState(null);
+  const [alumnoSeleccionado, setAlumnoSeleccionado] = useState(null);
 
   useEffect(() => {
     let alive = true;
@@ -37,9 +39,18 @@ export default function AsideAlumnos() {
             <ul className="space-y-3">
               {data.map((a) => (
                 <li key={a.id} className="rounded-lg border border-gray-700 p-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs opacity-70">#{a.id}</span>
-                    <span className="font-medium">{a.username}</span>
+                  <div className="flex items-center justify-between gap-2">
+                    <div>
+                      <span className="text-xs opacity-70 block">#{a.id}</span>
+                      <span className="font-medium">{a.username}</span>
+                    </div>
+                    <button
+                      type="button"
+                      className="text-xs px-2 py-1 rounded border border-emerald-500 text-emerald-300 hover:bg-emerald-500/10"
+                      onClick={() => setAlumnoSeleccionado(a)}
+                    >
+                      Asistencia
+                    </button>
                   </div>
                   <div className="mt-2 text-sm">
                     {Array.isArray(a.cursos) && a.cursos.length > 0 ? (
@@ -59,6 +70,13 @@ export default function AsideAlumnos() {
             </ul>
           )}
         </>
+      )}
+
+      {alumnoSeleccionado && (
+        <AsistenciaAlumnoModal
+          alumno={alumnoSeleccionado}
+          onClose={() => setAlumnoSeleccionado(null)}
+        />
       )}
     </aside>
   );

@@ -100,12 +100,24 @@ class CursoViewSet(viewsets.ModelViewSet):
         permission_classes=[IsTeacherOrAdmin],
     )
     def resumen_alumnos(self, request):
-        alumnos = User.objects.filter(role="S").values(
+        user = request.user
+
+        matriculas = Matricula.objects.select_related("alumno", "curso")
+        # Para profesores, solo matriculas de sus cursos
+        if getattr(user, "role", None) == "T":
+            matriculas = matriculas.filter(curso__profesor=user)
+
+        # Solo alumnos que tienen alguna matrícula relevante
+        alumno_ids = (
+            matriculas.values_list("alumno_id", flat=True).distinct()
+        )
+        alumnos = User.objects.filter(role="S", id__in=alumno_ids).values(
             "id",
             "username",
             "first_name",
             "last_name",
         )
+
         agrupado = {
             alumno["id"]: {
                 "id": alumno["id"],
@@ -117,7 +129,6 @@ class CursoViewSet(viewsets.ModelViewSet):
             for alumno in alumnos
         }
 
-        matriculas = Matricula.objects.select_related("alumno", "curso")
         for matricula in matriculas:
             alumno = matricula.alumno
             if getattr(alumno, "role", None) != "S":

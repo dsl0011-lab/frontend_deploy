@@ -9,7 +9,8 @@ from django.contrib.auth import get_user_model
 class EstudianteEntregaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Entrega
-        fields = '__all__'
+        fields = ["id", "tarea", "alumno", "texto", "archivo", "enviada_en"]
+        read_only_fields = ["alumno", "enviada_en"]
 
 
 class EstudianteTareaSerializer(serializers.ModelSerializer):
@@ -32,9 +33,45 @@ class EstudianteCursoSerializer(serializers.ModelSerializer):
 
 
 class EstudianteCalificacionSerializer(serializers.ModelSerializer):
+    tarea_titulo = serializers.CharField(
+        source="entrega.tarea.titulo", read_only=True
+    )
+    curso = serializers.IntegerField(
+        source="entrega.tarea.curso.id", read_only=True
+    )
+    curso_nombre = serializers.CharField(
+        source="entrega.tarea.curso.nombre", read_only=True
+    )
+    fecha_evaluacion = serializers.DateTimeField(
+        source="calificada_en", read_only=True
+    )
+    calificacion_texto = serializers.SerializerMethodField()
+
     class Meta:
         model = Calificacion
-        fields = '__all__'
+        fields = [
+            "id",
+            "entrega",
+            "nota",
+            "feedback",
+            "fecha_evaluacion",
+            "tarea_titulo",
+            "curso",
+            "curso_nombre",
+            "calificacion_texto",
+        ]
+
+    def get_calificacion_texto(self, obj):
+        nota = float(obj.nota)
+        if nota < 5.0:
+            return "Suspenso"
+        if nota < 6.0:
+            return "Aprobado"
+        if nota < 7.0:
+            return "Bien"
+        if nota < 9.0:
+            return "Notable"
+        return "Sobresaliente"
 
 
 class EstudianteTutoriaSerializer(serializers.ModelSerializer):

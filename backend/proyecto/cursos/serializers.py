@@ -21,10 +21,32 @@ class TareaSerializer(serializers.ModelSerializer):
         read_only_fields = ['creado_en']
 
 class EntregaSerializer(serializers.ModelSerializer):
+    tarea_titulo = serializers.CharField(source='tarea.titulo', read_only=True)
+    curso = serializers.IntegerField(source='tarea.curso.id', read_only=True)
+    curso_nombre = serializers.CharField(source='tarea.curso.nombre', read_only=True)
+    alumno_username = serializers.CharField(source='alumno.username', read_only=True)
+    alumno_nombre = serializers.SerializerMethodField()
+
     class Meta:
         model = Entrega
-        fields = ['id','tarea','alumno','texto','archivo','enviada_en']
+        fields = [
+            'id',
+            'tarea',
+            'alumno',
+            'texto',
+            'archivo',
+            'enviada_en',
+            'tarea_titulo',
+            'curso',
+            'curso_nombre',
+            'alumno_username',
+            'alumno_nombre',
+        ]
         read_only_fields = ['enviada_en']
+
+    def get_alumno_nombre(self, obj):
+        full_name = obj.alumno.get_full_name()
+        return full_name or obj.alumno.username
 
 class CalificacionSerializer(serializers.ModelSerializer):
     class Meta:

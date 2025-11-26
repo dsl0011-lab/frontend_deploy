@@ -1,16 +1,21 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import TutoriaViewSet, EstudianteCursoViewSet, EstudianteTareasViewSet, EstudiantecalificacionViewSet, EstudianteEntregaViewSet
+from .views import (
+    TutoriaViewSet,
+    EstudianteCursoViewSet,
+    EstudianteTareasViewSet,
+    EstudiantecalificacionViewSet,
+    EstudianteEntregaViewSet,
+)
 
 router = DefaultRouter()
-router.register(r'cursos', EstudianteCursoViewSet, basename='curso')
-router.register(r'tareas', EstudianteTareasViewSet, basename='tarea')
-router.register(r'calificacion', EstudiantecalificacionViewSet, basename='calificacion')
-router.register(r'tutorias', TutoriaViewSet, basename='tutorias')
-# esta funcionalidad estará desactivada hasta que se consiga como guardar los ficheros de las tareas dentro de una DB externa 
-# como Google Cloud Storage
-# router.register(r'entrega_tareas', EstudianteEntregaViewSet, basename='entrega_tareas') 
+router.register(r"cursos", EstudianteCursoViewSet, basename="curso")
+router.register(r"tareas", EstudianteTareasViewSet, basename="tarea")
+router.register(r"calificacion", EstudiantecalificacionViewSet, basename="calificacion")
+router.register(r"tutorias", TutoriaViewSet, basename="tutorias")
+router.register(r"entregas", EstudianteEntregaViewSet, basename="entregas")
 
 urlpatterns = [
-    path('', include(router.urls)),
+    path("", include(router.urls)),
 ]
+

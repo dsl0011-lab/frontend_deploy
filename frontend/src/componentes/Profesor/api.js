@@ -173,3 +173,26 @@ export async function getAlumnosCurso(cursoId){
   return res
 }
 
+export async function getAsistencias(params = {}) {
+  const searchParams = new URLSearchParams();
+  if (params.estudiante) searchParams.append("estudiante", params.estudiante);
+  if (params.curso) searchParams.append("curso", params.curso);
+  const qs = searchParams.toString();
+  return apiFetch(`/calificaciones/asistencias/${qs ? `?${qs}` : ""}`).catch(
+    () => []
+  );
+}
+
+export async function saveAsistencia(payload, id) {
+  if (id) {
+    return apiFetch(`/calificaciones/asistencias/${id}/`, {
+      method: "PATCH",
+      body: payload,
+    });
+  }
+  return apiFetch("/calificaciones/asistencias/", {
+    method: "POST",
+    body: payload,
+  });
+}
+
