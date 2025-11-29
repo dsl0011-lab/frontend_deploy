@@ -9,7 +9,7 @@ import closedEye from '../../assets/closedEye.svg'
 export default function AdminTemplate() {
     const [error, setError] = useState(false)
     const [errorDescripcion, setErrorDescripcion] = useState([])
-    const [requestFinalizada, setRequestFinalizada] = useState(false);
+    const [requestFinalizada, setRequestFinalizada] = useState(null);
     const [usuarioValidado, setUsuarioValidado] = useState(null);
     const [mostrarPassword, setMostrarPassword] = useState(false);
     const URL = `${API_BASE}api/auth/adminLogin`
@@ -80,7 +80,7 @@ export default function AdminTemplate() {
                             {errorDescripcion.map((err, i) => <p key={i}>{err}</p>)}
                         </div>
                     )}
-                    {((requestFinalizada && !error && errorDescripcion.length === 0)) && <MiniComponenteLoadingFit />}
+                    {((requestFinalizada && requestFinalizada !== null && !error && errorDescripcion.length === 0)) && <MiniComponenteLoadingFit />}
                     <form onSubmit={(e) => saveForm(e)} className='w-full h-full max-w-[600px] xs:h-fit xs:min-h-[400px] mdh:min-h-[250px] border-sky-500 border-2 rounded-2xl flex flex-col items-center justify-center xs:p-12 p-2 pt-8 pb-8 gap-2
                     bg-gradient-to-t from-gray-900 via-gray-800 to-gray-900 shadow-lg' onMouseOver={() => setError(false)}>
                         <div className='w-fit min-w-[400px] h-fit flex flex-col gap-8'>

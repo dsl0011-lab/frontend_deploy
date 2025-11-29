@@ -8,7 +8,7 @@ const Logout = () => {
     let cookie = document.cookie
     cookie = cookie.split(";").flat().find(item => item.startsWith(" recordarDatos"))
     if(!cookie){
-        fetch(`${API_BASE}/api/auth/logout`, {
+        fetch(`${API_BASE}api/auth/logout`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             credentials: "include",
@@ -22,7 +22,7 @@ const Logout = () => {
 
 async function secureFetch() {
     try {
-        const res = await fetch(`${API_BASE}/api/auth/token/refresh_cookie/`, {
+        const res = await fetch(`${API_BASE}api/auth/token/refresh_cookie/`, {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },

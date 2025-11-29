@@ -1,6 +1,6 @@
 import Register from './Registro';
 import Login from './Login';
-import Logo from '../../assets/logo-2.png'
+import Logo from '../../../static/logo-2.png'
 import { ComponenteLoading, MiniComponenteLoading } from '../PantallaLoading/ComponenteLoading';
 import { UsuarioContext } from '../useContext/UsuarioContext';
 import { LoadingContext } from '../useContext/LoadingContext';
@@ -10,8 +10,8 @@ import { useNavigate } from 'react-router-dom';
 const Auth = () => {
   const [flipped, setFlipped] = useState(false);
   const { setUsuario } = useContext(UsuarioContext);
-  const { Loading, setLoading } = useContext(LoadingContext);
   const [error, setError] = useState(false)
+  const [requestFinalizada, setRequestFinalizada] = useState(false);
   const navigate = useNavigate();
 
   const funcUsuario = useCallback((informacion) => {
@@ -27,9 +27,9 @@ const Auth = () => {
     //validacion para inicio automatico
     const usuario = localStorage.getItem("usuarioGuardado")
     if (usuario) {
-      setLoading(true)
+      setRequestFinalizada(true)
     }
-  }, [setLoading, error])
+  }, [setRequestFinalizada, error])
 
 
   return (
@@ -42,18 +42,18 @@ const Auth = () => {
             className={`relative w-full h-full transition-transform duration-1000 [transform-style:preserve-3d] bg-gray-800 rounded-2xl flex justify-center items-center ${flipped ? "[transform:rotateY(180deg)]" : ""
               }`}
           >
-            {(Loading && !error) &&
+            {(requestFinalizada && !error) &&
               <div className='absolute h-fit w-fit top-0 z-20'>
                 <MiniComponenteLoading />
               </div>}
             {/* Cara frontal (Login) */}
             <div className='absolute w-full h-full top-0 left-0 [backface-visibility:hidden] p-2'>
-              <Login funcUsuario={funcUsuario} setFlipped={setFlipped} setError={setError} error={error} />
+              <Login funcUsuario={funcUsuario} setFlipped={setFlipped} setError={setError} error={error} setRequestFinalizada={setRequestFinalizada} />
             </div>
 
             {/* Cara trasera (Registro) */}
             <div className='absolute w-full h-full top-0 left-0 [backface-visibility:hidden] [transform:rotateY(180deg)] p-2 rounded-2xl flex flex-col'>
-              <Register funcUsuario={funcUsuario} setFlipped={setFlipped} />
+              <Register funcUsuario={funcUsuario} setFlipped={setFlipped} setRequestFinalizada={setRequestFinalizada}/>
             </div>
           </article>
         </section>
