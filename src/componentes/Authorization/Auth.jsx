@@ -7,6 +7,7 @@ import { useState, useCallback, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const Auth = () => {
+  const [errorDescripcion, setErrorDescripcion] = useState([])
   const [flipped, setFlipped] = useState(false);
   const { setUsuario } = useContext(UsuarioContext);
   const [error, setError] = useState(false)
@@ -41,18 +42,18 @@ const Auth = () => {
             className={`relative w-full h-full transition-transform duration-1000 [transform-style:preserve-3d] bg-gray-800 rounded-2xl flex justify-center items-center ${flipped ? "[transform:rotateY(180deg)]" : ""
               }`}
           >
-            {(requestFinalizada && !error) &&
+            {(requestFinalizada && !error && errorDescripcion.length === 0) &&
               <div className='absolute h-fit w-fit top-0 z-20'>
                 <MiniComponenteLoading />
               </div>}
             {/* Cara frontal (Login) */}
             <div className='absolute w-full h-full top-0 left-0 [backface-visibility:hidden] p-2'>
-              <Login funcUsuario={funcUsuario} setFlipped={setFlipped} setError={setError} error={error} setRequestFinalizada={setRequestFinalizada} />
+              <Login funcUsuario={funcUsuario} setFlipped={setFlipped} setError={setError} error={error} setRequestFinalizada={setRequestFinalizada} setErrorDescripcion={setErrorDescripcion} errorDescripcion={errorDescripcion}/>
             </div>
 
             {/* Cara trasera (Registro) */}
             <div className='absolute w-full h-full top-0 left-0 [backface-visibility:hidden] [transform:rotateY(180deg)] p-2 rounded-2xl flex flex-col'>
-              <Register funcUsuario={funcUsuario} setFlipped={setFlipped} setRequestFinalizada={setRequestFinalizada}/>
+              <Register funcUsuario={funcUsuario} setFlipped={setFlipped} setRequestFinalizada={setRequestFinalizada} setErrorDescripcion={setErrorDescripcion} errorDescripcion={errorDescripcion}/>
             </div>
           </article>
         </section>

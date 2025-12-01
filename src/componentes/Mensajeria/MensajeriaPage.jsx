@@ -14,7 +14,7 @@ export default function MensajeriaPage() {
   const [msgs, setMsgs] = React.useState([])
   const [err, setErr] = React.useState("")
   const [open, setOpen] = React.useState(false)
-  const puedeBorrar = usuario?.role === 'T' || usuario?.role === 'A'
+  const puedeBorrar = usuario?.role === 'T' || usuario?.role === 'A' || usuario?.role === "S"
   const [ requestFinalizada, setRequestFinalizada ] = useState(false)
 
   React.useEffect(() => { 

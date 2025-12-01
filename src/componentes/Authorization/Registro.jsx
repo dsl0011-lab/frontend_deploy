@@ -4,11 +4,10 @@ import { API_BASE } from "./scripts/Security";
 import eye from '../../assets/img-eye.svg'
 import closedEye from '../../assets/closedEye.svg'
 
-const Register = ({ funcUsuario, setFlipped, setRequestFinalizada }) => {
-    const URL = `${API_BASE}api/auth/register/`
+const Register = ({ funcUsuario, setFlipped, setRequestFinalizada, setErrorDescripcion, errorDescripcion }) => {
+    const URL = `${API_BASE}/api/auth/register/`
     const [error, setError] = useState(false)
     const [help, setHelp] = useState(false)
-    const [errorDescripcion, setErrorDescripcion] = useState([])
     const [mostrarPassword, setMostrarPassword] = useState(false);
     const [formData, setFormData] = useState({
         full_name: "",
@@ -20,6 +19,9 @@ const Register = ({ funcUsuario, setFlipped, setRequestFinalizada }) => {
 
     const saveForm = (e) => {
         e.preventDefault()
+        // setError(false);
+        setErrorDescripcion([]);
+        setRequestFinalizada(false);
         setFormData({
             first_name: e.currentTarget.first_name.value.trim(),
             last_name: e.currentTarget.last_name.value.trim(),
@@ -63,20 +65,20 @@ const Register = ({ funcUsuario, setFlipped, setRequestFinalizada }) => {
             }
         }
         sendData();
-    }, [formData, funcUsuario, setRequestFinalizada, URL])
+    }, [formData, funcUsuario, setRequestFinalizada, URL, setErrorDescripcion])
 
-    
+
     return (
         <>
             <div className="w-full h-full relative" onClick={() => setError(false)}>
                 <h1 className="relative w-fit h-fit text-base sm:text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                     Registro
                 </h1>
-                {(error && (errorDescripcion ? (
+                {(setRequestFinalizada && error && errorDescripcion.length > 0) && (
                     <div className="absolute p-2 rounded-lg bg-red-800 top-10 m-2 text-white pl-2 pr-2">
                         {errorDescripcion.map((err, i) => <p key={i}>{err}</p>)}
                     </div>
-                ) : <p>Ha ocurrido un error...</p>))}
+                )}
                 <form className="grid place-items-center w-full h-full text-sm sm:grid-cols-2 grid-cols-1 sm:gap-4 pb-5" onSubmit={(e) => { saveForm(e) }}>
                     <input type="text" name="first_name" id="first_name" placeholder="Ingresa tu nombre" className="text-white bg-gray-50 border border-gray-300 rounded-2xl w-full max-w-60 h-auto p-0.5 sm:p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" required />
                     <input type="text" name="last_name" id="last_name" placeholder="Ingresa tus apellidos" className="text-white bg-gray-50 border border-gray-300 rounded-2xl w-full max-w-60 h-auto p-0.5 sm:p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" required />

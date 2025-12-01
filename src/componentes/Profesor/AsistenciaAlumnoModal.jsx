@@ -129,7 +129,7 @@ export default function AsistenciaAlumnoModal({ alumno, onClose }) {
             <select
               value={cursoId}
               onChange={(e) => setCursoId(e.target.value)}
-              className="w-full rounded border border-gray-600 bg-gray-800 px-2 py-1 text-sm text-white"
+              className="w-full max-h-16 text-white bg-gray-50 border border-gray-300 rounded-2xl h-auto p-1.5 sm:p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
             >
               <option value="">Selecciona un curso</option>
               {cursos.map((c) => (

@@ -75,14 +75,14 @@ export default function AdminTemplate() {
                 <h1 className='h-fit w-fit self-start lg:text-4xl md:text-2xl text-xl'>Panel Administrador</h1>
                 <article className='w-full h-full flex flex-col items-center justify-center pt-4 pb-4 relative'>
                     {/* logica form */}
-                    {error && (
+                    {(error && errorDescripcion.length > 0) && (
                         <div className="absolute p-2 rounded-lg bg-red-800 top-10 m-2 text-white pl-2 pr-2">
                             {errorDescripcion.map((err, i) => <p key={i}>{err}</p>)}
                         </div>
                     )}
-                    {((requestFinalizada && requestFinalizada !== null && !error && errorDescripcion.length === 0)) && <MiniComponenteLoadingFit />}
+                    {((requestFinalizada && requestFinalizada && errorDescripcion.length === 0)) && <MiniComponenteLoadingFit />}
                     <form onSubmit={(e) => saveForm(e)} className='w-full h-full max-w-[600px] xs:h-fit xs:min-h-[400px] mdh:min-h-[250px] border-sky-500 border-2 rounded-2xl flex flex-col items-center justify-center xs:p-12 p-2 pt-8 pb-8 gap-2
-                    bg-gradient-to-t from-gray-900 via-gray-800 to-gray-900 shadow-lg' onMouseOver={() => setError(false)}>
+                    bg-gradient-to-t from-gray-900 via-gray-800 to-gray-900 shadow-lg' onClick={() => setError(false)}>
                         <div className='w-fit min-w-[400px] h-fit flex flex-col gap-8'>
                             <input type="text" placeholder='Ingresa tu usuario' name="username" id='username'
                                 className="flex-1 text-white bg-gray-50 border border-gray-300 rounded-2xl w-full h-auto p-1.5 sm:p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" required />
