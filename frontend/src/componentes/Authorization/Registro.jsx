@@ -4,11 +4,10 @@ import { API_BASE } from "./scripts/Security";
 import eye from '../../assets/img-eye.svg'
 import closedEye from '../../assets/closedEye.svg'
 
-const Register = ({ funcUsuario, setFlipped, setRequestFinalizada }) => {
+const Register = ({ funcUsuario, setFlipped, setRequestFinalizada, setErrorDescripcion, errorDescripcion }) => {
     const URL = `${API_BASE}/api/auth/register/`
     const [error, setError] = useState(false)
     const [help, setHelp] = useState(false)
-    const [errorDescripcion, setErrorDescripcion] = useState([])
     const [mostrarPassword, setMostrarPassword] = useState(false);
     const [formData, setFormData] = useState({
         full_name: "",
@@ -20,6 +19,9 @@ const Register = ({ funcUsuario, setFlipped, setRequestFinalizada }) => {
 
     const saveForm = (e) => {
         e.preventDefault()
+        // setError(false);
+        setErrorDescripcion([]);
+        setRequestFinalizada(false);
         setFormData({
             first_name: e.currentTarget.first_name.value.trim(),
             last_name: e.currentTarget.last_name.value.trim(),
@@ -63,7 +65,7 @@ const Register = ({ funcUsuario, setFlipped, setRequestFinalizada }) => {
             }
         }
         sendData();
-    }, [formData, funcUsuario, setRequestFinalizada, URL])
+    }, [formData, funcUsuario, setRequestFinalizada, URL, setErrorDescripcion])
 
 
     return (
@@ -72,7 +74,7 @@ const Register = ({ funcUsuario, setFlipped, setRequestFinalizada }) => {
                 <h1 className="relative w-fit h-fit text-base sm:text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                     Registro
                 </h1>
-                {error && (
+                {(setRequestFinalizada && error && errorDescripcion.length > 0) && (
                     <div className="absolute p-2 rounded-lg bg-red-800 top-10 m-2 text-white pl-2 pr-2">
                         {errorDescripcion.map((err, i) => <p key={i}>{err}</p>)}
                     </div>

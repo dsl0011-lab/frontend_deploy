@@ -232,7 +232,7 @@ export default function ExamenesPage() {
             <select
               value={evCursoId}
               onChange={(e) => setEvCursoId(e.target.value)}
-              className="w-full rounded border border-gray-600 bg-transparent px-3 py-2"
+              className="w-full max-h-16 text-white bg-gray-50 border border-gray-300 rounded-2xl h-auto p-1.5 sm:p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
               required
             >
               <option value="">Selecciona un curso</option>
@@ -348,7 +348,7 @@ export default function ExamenesPage() {
             <select
               value={gradeCursoId}
               onChange={(e) => onGradeCursoChange(e.target.value)}
-              className="w-full rounded border border-gray-600 bg-transparent px-3 py-2"
+              className="w-full max-h-16 text-white bg-gray-50 border border-gray-300 rounded-2xl h-auto p-1.5 sm:p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
               required
             >
               <option value="">Selecciona un curso</option>
@@ -364,7 +364,7 @@ export default function ExamenesPage() {
             <select
               value={gradeAlumnoId}
               onChange={(e) => setGradeAlumnoId(e.target.value)}
-              className="w-full rounded border border-gray-600 bg-transparent px-3 py-2"
+              className="w-full max-h-16 text-white bg-gray-50 border border-gray-300 rounded-2xl h-auto p-1.5 sm:p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
               required
               disabled={!gradeCursoId}
             >
@@ -380,7 +380,7 @@ export default function ExamenesPage() {
           <div>
             <label className="block mb-1">Nombre del examen</label>
             <input
-              className="w-full rounded border border-gray-600 bg-transparent px-3 py-2"
+              className="w-full max-h-16 text-white bg-gray-50 border border-gray-300 rounded-2xl h-auto p-1.5 sm:p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
               value={gradeNombre}
               onChange={(e) => setGradeNombre(e.target.value)}
               placeholder="Ej. Examen Tema 1"

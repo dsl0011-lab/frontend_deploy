@@ -74,9 +74,9 @@ class ConversacionViewSet(viewsets.ModelViewSet):
         """Solo ADMIN ('A'), profesor ('T') o superuser pueden borrar conversaciones."""
         user = request.user
         role = getattr(user, 'role', None)
-        if not (getattr(user, 'is_superuser', False) or role in ('A', 'T')):
-            return Response({"detail": "Solo profesores o administradores pueden eliminar conversaciones."},
-                            status=status.HTTP_403_FORBIDDEN)
+        # if not (getattr(user, 'is_superuser', False) or role in ('A', 'T', 'S')):
+        #     return Response({"detail": "Solo profesores o administradores pueden eliminar conversaciones."},
+        #                     status=status.HTTP_403_FORBIDDEN)
         return super().destroy(request, *args, **kwargs)
 
     @action(detail=True, methods=['get', 'post'], url_path='mensajes')
