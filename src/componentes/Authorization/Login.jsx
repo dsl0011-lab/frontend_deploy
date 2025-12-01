@@ -102,7 +102,6 @@ const Login = ({ setFlipped, funcUsuario, setError, error, setRequestFinalizada}
     }, [form, funcUsuario, setRequestFinalizada, URL, setError])
 
 
-    useEffect(() => console.log(errorDescripcion), [errorDescripcion])
 
     const btnRecuerdame = () => {
         setDatosRecordados(prev => !prev)

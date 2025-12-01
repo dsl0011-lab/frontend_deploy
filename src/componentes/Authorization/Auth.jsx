@@ -1,9 +1,8 @@
 import Register from './Registro';
 import Login from './Login';
 import Logo from '../../../static/logo-2.png'
-import { ComponenteLoading, MiniComponenteLoading } from '../PantallaLoading/ComponenteLoading';
+import { MiniComponenteLoading } from '../PantallaLoading/ComponenteLoading';
 import { UsuarioContext } from '../useContext/UsuarioContext';
-import { LoadingContext } from '../useContext/LoadingContext';
 import { useState, useCallback, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 

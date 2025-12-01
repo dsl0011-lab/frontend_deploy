@@ -21,9 +21,9 @@ const CalificacionesEstudiante = () => {
       };
 
       const [respCalif, respTareas, respEstad] = await Promise.all([
-        axios.get(`${API_BASE}/api/calificaciones/notas/`, config),
-        axios.get(`${API_BASE}/api/estudiante/calificacion/`, config),
-        axios.get(`${API_BASE}/api/calificaciones/notas/estadisticas/`, config),
+        axios.get(`${API_BASE}api/calificaciones/notas/`, config),
+        axios.get(`${API_BASE}api/estudiante/calificacion/`, config),
+        axios.get(`${API_BASE}api/calificaciones/notas/estadisticas/`, config),
       ]);
 
       const notas = Array.isArray(respCalif.data) ? respCalif.data : [];
